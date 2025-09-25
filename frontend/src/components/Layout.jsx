@@ -25,6 +25,8 @@ const Layout = () => {
     { name: 'Challenges', href: '/challenges', icon: BookOpen },
     { name: 'Community', href: '/community', icon: Users },
     { name: 'Settings', href: '/settings', icon: Settings },
+    { name: 'Game Design', href: '/game-design', icon: BookOpen },
+    { name: 'Play Game', href: '/game', icon: Home },
   ];
 
   const getRoleColor = (role) => {

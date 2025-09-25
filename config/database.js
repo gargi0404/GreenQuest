@@ -1,13 +1,29 @@
 const mongoose = require('mongoose');
 
 const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI);
+  const isProduction = process.env.NODE_ENV === 'production';
+  const mongoUri = process.env.MONGODB_URI;
 
+  // In development, allow the API to boot without MongoDB to speed up local runs
+  if (!mongoUri && !isProduction) {
+    console.warn('MONGODB_URI not set. Skipping MongoDB connection in development.');
+    return;
+  }
+
+  try {
+    if (!mongoUri) {
+      throw new Error('MONGODB_URI is required in production');
+    }
+
+    const conn = await mongoose.connect(mongoUri);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error('Database connection error:', error.message);
-    process.exit(1);
+    if (isProduction) {
+      console.error('Database connection error (production):', error.message);
+      process.exit(1);
+    } else {
+      console.warn('Database connection skipped or failed in development:', error.message);
+    }
   }
 };
 

@@ -33,6 +33,12 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
+          <Route path="/game" element={<GameHub />} />
+          <Route path="/game/level-1" element={<Level1 />} />
+          <Route path="/game/level-2" element={<Level2 />} />
+          <Route path="/game/level-3" element={<Level3 />} />
+          <Route path="/game/level-4" element={<Level4 />} />
+          <Route path="/game/level-5" element={<Level5 />} />
           
           {/* Protected routes */}
           <Route path="/" element={<Layout />}>
@@ -61,18 +67,18 @@ function App() {
               } 
             />
             <Route 
-              path="badges" 
+              path="real-world-tasks" 
               element={
                 <ProtectedRoute>
-                  <Badges />
+                  <RealWorldEcoTasks />
                 </ProtectedRoute>
               } 
             />
             <Route 
-              path="challenges" 
+              path="game-rules" 
               element={
                 <ProtectedRoute>
-                  <Challenges />
+                  <GameRules />
                 </ProtectedRoute>
               } 
             />

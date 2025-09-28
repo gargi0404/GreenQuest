@@ -393,6 +393,25 @@ const Level1 = () => {
             </div>
           </div>
 
+          {/* Gamification Features Info */}
+          <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border border-blue-200">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">🎮 Gamification Features</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div className="flex items-center space-x-2">
+                <span className="text-yellow-500">⚡</span>
+                <span>Answer correctly to earn power-ups (20% chance)</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-green-500">💎</span>
+                <span>Collect eco items for bonus points (30% chance)</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-orange-500">🔥</span>
+                <span>Build streaks for score multipliers</span>
+              </div>
+            </div>
+          </div>
+
           {/* Game Card */}
           <div className="bg-white rounded-xl shadow-lg p-8 mb-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">{currentGame.question}</h2>
@@ -426,6 +445,25 @@ const Level1 = () => {
                   <div className={`text-sm ${feedback[currentGame.id].correct ? 'text-green-600' : 'text-red-600'}`}>
                     {feedback[currentGame.id].correct ? 'Correct!' : 'Incorrect'} 
                     {feedback[currentGame.id].points && ` (+${feedback[currentGame.id].points} points)`}
+                  </div>
+                )}
+              </div>
+              
+              {/* Gamification Status */}
+              <div className="flex items-center space-x-4 text-sm">
+                {multiplier > 1 && (
+                  <div className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+                    ×{multiplier} Multiplier Active!
+                  </div>
+                )}
+                {powerUps.length > 0 && (
+                  <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                    {powerUps.length} Power-up{powerUps.length > 1 ? 's' : ''} Available
+                  </div>
+                )}
+                {collectibles.length > 0 && (
+                  <div className="bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                    {collectibles.length} Collectible{collectibles.length > 1 ? 's' : ''} Found
                   </div>
                 )}
               </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  BookOpen, Users, Clock,
+  BookOpen, Users, Clock, Target, Award, Flame,
   Zap, Leaf, Recycle, Sun, Wind, Home, Trophy
 } from 'lucide-react';
 

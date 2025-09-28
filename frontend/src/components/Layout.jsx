@@ -146,7 +146,7 @@ const Layout = () => {
                   </div>
                 </div>
                 <div className="hidden lg:block text-sm text-gray-500">
-                  Level {user?.level} • {user?.points} points
+                  Level {user?.level || 1} • {user?.points || 0} points
                 </div>
               </div>
 

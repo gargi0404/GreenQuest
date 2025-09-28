@@ -140,8 +140,8 @@ const Layout = () => {
                   <span className="text-lg">{getRoleIcon(user?.role)}</span>
                   <div className="hidden lg:block">
                     <p className="text-sm font-medium text-gray-900">{user?.name}</p>
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getRoleColor(user?.role)}`}>
-                      {user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1)}
+                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getRoleColor(user?.role || 'user')}`}>
+                      {(user?.role || 'user')?.charAt(0).toUpperCase() + (user?.role || 'user')?.slice(1)}
                     </span>
                   </div>
                 </div>

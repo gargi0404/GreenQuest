@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Phone, MapPin, Clock, Users, Leaf, Recycle, Zap, Plus, Filter, Search } from 'lucide-react';
+import { Phone, MapPin, Clock, Users, Leaf, Recycle, Zap, Plus, Filter, Search, Heart } from 'lucide-react';
 
 const Community = () => {
   const { user } = useAuth();

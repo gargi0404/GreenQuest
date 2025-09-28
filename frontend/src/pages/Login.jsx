@@ -54,6 +54,14 @@ const Login = () => {
     }
   };
 
+  const fillCredentials = (email, password) => {
+    setFormData({
+      email,
+      password
+    });
+    clearError();
+  };
+
   const validateForm = () => {
     const newErrors = {};
     
@@ -197,12 +205,43 @@ const Login = () => {
           </div>
         </form>
 
-        {/* Demo credentials */}
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <h3 className="text-sm font-medium text-gray-900 mb-2">Demo Credentials:</h3>
-          <div className="text-xs text-gray-600 space-y-1">
-            <p><strong>Student:</strong> test@example.com / password123</p>
-            <p><strong>Teacher:</strong> teacher@example.com / password123</p>
+        {/* Test credentials */}
+        <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <h3 className="text-sm font-medium text-green-900 mb-3">🧪 Test Credentials:</h3>
+          <div className="text-xs text-green-800 space-y-2">
+            <div className="grid grid-cols-1 gap-2">
+              <div 
+                className="flex justify-between cursor-pointer hover:bg-green-100 p-1 rounded transition-colors"
+                onClick={() => fillCredentials('student@test.com', 'password123')}
+              >
+                <span><strong>Student:</strong></span>
+                <span>student@test.com / password123</span>
+              </div>
+              <div 
+                className="flex justify-between cursor-pointer hover:bg-green-100 p-1 rounded transition-colors"
+                onClick={() => fillCredentials('teacher@test.com', 'password123')}
+              >
+                <span><strong>Teacher:</strong></span>
+                <span>teacher@test.com / password123</span>
+              </div>
+              <div 
+                className="flex justify-between cursor-pointer hover:bg-green-100 p-1 rounded transition-colors"
+                onClick={() => fillCredentials('admin@test.com', 'password123')}
+              >
+                <span><strong>Admin:</strong></span>
+                <span>admin@test.com / password123</span>
+              </div>
+              <div 
+                className="flex justify-between cursor-pointer hover:bg-green-100 p-1 rounded transition-colors"
+                onClick={() => fillCredentials('ngo@test.com', 'password123')}
+              >
+                <span><strong>NGO:</strong></span>
+                <span>ngo@test.com / password123</span>
+              </div>
+            </div>
+            <p className="text-green-700 mt-2 text-center">
+              💡 Click on any credential to auto-fill the form
+            </p>
           </div>
         </div>
       </div>

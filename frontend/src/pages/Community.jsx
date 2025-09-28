@@ -1,286 +1,399 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Users, MessageCircle, Heart, Share, Plus, Filter, Search } from 'lucide-react';
+import { Phone, MapPin, Clock, Users, Leaf, Recycle, Zap, Plus, Filter, Search } from 'lucide-react';
 
 const Community = () => {
   const { user } = useAuth();
-  const [posts, setPosts] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
-    fetchPosts();
+    fetchProducts();
   }, []);
 
-  const fetchPosts = async () => {
+  const fetchProducts = async () => {
     try {
       setLoading(true);
-      // Mock data for community posts
-      const mockPosts = [
+      // Mock data for eco-friendly products
+      const mockProducts = [
         {
           id: 1,
-          author: {
+          seller: {
             name: "Eco Warrior Sarah",
             role: "student",
             level: 8,
             points: 450,
-            avatar: "👩‍🎓"
+            avatar: "👩‍🎓",
+            rating: 4.8,
+            sales: 23
           },
-          content: "Just completed the Ocean Conservation challenge! Learned so much about marine ecosystems. The quiz was challenging but really informative. 🌊🐋",
-          timestamp: "2 hours ago",
+          title: "Handmade Bamboo Water Bottle",
+          description: "Sustainable bamboo water bottle with stainless steel interior. Perfect for reducing plastic waste!",
+          category: "sustainable-products",
+          image: "🌿",
+          tags: ["bamboo", "water bottle", "plastic-free"],
+          location: "Mumbai, India",
+          contactNumber: "+91 98765 43210",
+          posted: "2 hours ago",
           likes: 12,
-          comments: 5,
-          shares: 3,
           liked: false,
-          category: "achievement"
+          inStock: true,
+          ecoRating: 5
         },
         {
           id: 2,
-          author: {
-            name: "Green Teacher Mike",
-            role: "teacher",
-            level: 15,
-            points: 1200,
-            avatar: "👨‍🏫"
-          },
-          content: "Sharing some amazing tips for reducing plastic waste in schools. We've reduced our plastic usage by 60% this semester! Here's what we did: 1) Reusable water bottles 2) Paper straws 3) Cloth bags for lunch. What are your school's eco-friendly initiatives?",
-          timestamp: "4 hours ago",
-          likes: 28,
-          comments: 12,
-          shares: 8,
-          liked: true,
-          category: "tips"
-        },
-        {
-          id: 3,
-          author: {
-            name: "Ocean Guardian NGO",
-            role: "ngo",
-            level: 20,
-            points: 2500,
-            avatar: "🌍"
-          },
-          content: "🌊 Beach Cleanup Event Alert! Join us this Saturday at Marina Beach for our monthly cleanup drive. We'll provide all equipment. Let's make a difference together! #BeachCleanup #OceanConservation",
-          timestamp: "6 hours ago",
-          likes: 45,
-          comments: 18,
-          shares: 15,
-          liked: false,
-          category: "event"
-        },
-        {
-          id: 4,
-          author: {
-            name: "Climate Crusader Alex",
-            role: "student",
-            level: 12,
-            points: 800,
-            avatar: "👨‍🎓"
-          },
-          content: "Just reached Level 12! 🎉 The renewable energy quiz was tough but I aced it. Solar panels are so cool - did you know they can power entire cities? The future is bright! ☀️",
-          timestamp: "8 hours ago",
-          likes: 18,
-          comments: 7,
-          shares: 4,
-          liked: true,
-          category: "achievement"
-        },
-        {
-          id: 5,
-          author: {
-            name: "Eco Mom Lisa",
+          seller: {
+            name: "Green Thumb Mike",
             role: "student",
             level: 6,
             points: 320,
-            avatar: "👩‍🎓"
+            avatar: "👨‍🌾",
+            rating: 4.6,
+            sales: 15
           },
-          content: "Started a composting project in our neighborhood! It's amazing how much waste we can turn into nutrient-rich soil. My garden has never looked better! 🌱 Anyone else into composting?",
-          timestamp: "1 day ago",
-          likes: 22,
-          comments: 9,
-          shares: 6,
+          title: "Organic Seed Starter Kit",
+          description: "Complete kit with organic seeds, biodegradable pots, and growing guide. Start your own garden!",
+          category: "gardening",
+          image: "🌱",
+          tags: ["seeds", "organic", "gardening", "starter kit"],
+          location: "Delhi, India",
+          contactNumber: "+91 87654 32109",
+          posted: "5 hours ago",
+          likes: 8,
+          liked: true,
+          inStock: true,
+          ecoRating: 5
+        },
+        {
+          id: 3,
+          seller: {
+            name: "Recycle Master Priya",
+            role: "student",
+            level: 9,
+            points: 520,
+            avatar: "👩‍🔬",
+            rating: 4.9,
+            sales: 31
+          },
+          title: "Upcycled Glass Jars Set",
+          description: "Beautiful set of 6 upcycled glass jars perfect for storage, DIY projects, or as planters.",
+          category: "upcycled",
+          image: "🫙",
+          tags: ["upcycled", "glass", "storage", "DIY"],
+          location: "Bangalore, India",
+          contactNumber: "+91 76543 21098",
+          posted: "1 day ago",
+          likes: 15,
           liked: false,
-          category: "project"
+          inStock: true,
+          ecoRating: 4
+        },
+        {
+          id: 4,
+          seller: {
+            name: "Solar Sam",
+            role: "student",
+            level: 7,
+            points: 380,
+            avatar: "👨‍💻",
+            rating: 4.7,
+            sales: 19
+          },
+          title: "Solar-Powered Phone Charger",
+          description: "Portable solar charger for phones and small devices. Perfect for outdoor adventures!",
+          category: "solar-tech",
+          image: "☀️",
+          tags: ["solar", "charger", "portable", "renewable"],
+          location: "Chennai, India",
+          contactNumber: "+91 65432 10987",
+          posted: "3 days ago",
+          likes: 22,
+          liked: true,
+          inStock: true,
+          ecoRating: 5
+        },
+        {
+          id: 5,
+          seller: {
+            name: "Compost Queen Lisa",
+            role: "student",
+            level: 5,
+            points: 280,
+            avatar: "👩‍🍳",
+            rating: 4.5,
+            sales: 12
+          },
+          title: "Composting Bin with Worms",
+          description: "Complete composting setup with red wiggler worms and instructions. Turn kitchen waste into gold!",
+          category: "composting",
+          image: "🪱",
+          tags: ["compost", "worms", "kitchen waste", "fertilizer"],
+          location: "Pune, India",
+          contactNumber: "+91 54321 09876",
+          posted: "1 week ago",
+          likes: 18,
+          liked: false,
+          inStock: true,
+          ecoRating: 5
+        },
+        {
+          id: 6,
+          seller: {
+            name: "Eco Artist Raj",
+            role: "student",
+            level: 4,
+            points: 200,
+            avatar: "👨‍🎨",
+            rating: 4.3,
+            sales: 8
+          },
+          title: "Handmade Paper from Recycled Materials",
+          description: "Beautiful handmade paper sheets made from recycled newspapers and cotton. Perfect for art projects!",
+          category: "crafts",
+          image: "📄",
+          tags: ["handmade", "recycled", "paper", "art"],
+          location: "Kolkata, India",
+          contactNumber: "+91 43210 98765",
+          posted: "2 weeks ago",
+          likes: 6,
+          liked: false,
+          inStock: false,
+          ecoRating: 4
         }
       ];
 
-      setPosts(mockPosts);
+      setProducts(mockProducts);
     } catch (error) {
-      console.error('Error fetching posts:', error);
+      console.error('Error fetching products:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const getRoleColor = (role) => {
-    switch (role) {
-      case 'student': return 'bg-blue-100 text-blue-800';
-      case 'teacher': return 'bg-green-100 text-green-800';
-      case 'ngo': return 'bg-purple-100 text-purple-800';
-      case 'admin': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
+  const categories = [
+    { id: '', name: 'All Categories' },
+    { id: 'sustainable-products', name: 'Sustainable Products' },
+    { id: 'gardening', name: 'Gardening' },
+    { id: 'upcycled', name: 'Upcycled Items' },
+    { id: 'solar-tech', name: 'Solar Technology' },
+    { id: 'composting', name: 'Composting' },
+    { id: 'crafts', name: 'Eco Crafts' }
+  ];
+
+  const filteredProducts = products.filter(product => {
+    const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         product.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesCategory = !selectedCategory || product.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   const getCategoryIcon = (category) => {
     switch (category) {
-      case 'achievement': return '🏆';
-      case 'tips': return '💡';
-      case 'event': return '📅';
-      case 'project': return '🌱';
-      default: return '💬';
+      case 'sustainable-products': return <Leaf className="h-4 w-4" />;
+      case 'gardening': return <Recycle className="h-4 w-4" />;
+      case 'upcycled': return <Zap className="h-4 w-4" />;
+      case 'solar-tech': return <Zap className="h-4 w-4" />;
+      case 'composting': return <Recycle className="h-4 w-4" />;
+      case 'crafts': return <Leaf className="h-4 w-4" />;
+      default: return <Leaf className="h-4 w-4" />;
     }
   };
 
-  const toggleLike = (postId) => {
-    setPosts(prev => prev.map(post => 
-      post.id === postId 
-        ? { 
-            ...post, 
-            liked: !post.liked, 
-            likes: post.liked ? post.likes - 1 : post.likes + 1 
-          }
-        : post
-    ));
+  const getEcoRatingStars = (rating) => {
+    return '🌱'.repeat(rating) + '⚪'.repeat(5 - rating);
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Community 🤝</h1>
-          <p className="text-gray-600">Connect with fellow eco-warriors and share your journey</p>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-extrabold text-gray-900 mb-4">
+            <Leaf className="inline-block h-10 w-10 mr-3 text-primary-600" />
+            Community Eco Bazaar
+          </h1>
+          <p className="text-lg text-gray-700 mb-6">
+            Discover and share eco-friendly products with your community. Connect directly with sellers!
+          </p>
         </div>
-        <button className="btn-primary flex items-center">
-          <Plus className="h-4 w-4 mr-2" />
-          Create Post
-        </button>
-      </div>
 
-      {/* Community Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="card text-center">
-          <div className="text-3xl font-bold text-primary-600">1.2K</div>
-          <div className="text-sm text-gray-600">Active Members</div>
-        </div>
-        <div className="card text-center">
-          <div className="text-3xl font-bold text-green-600">456</div>
-          <div className="text-sm text-gray-600">Posts This Week</div>
-        </div>
-        <div className="card text-center">
-          <div className="text-3xl font-bold text-yellow-600">89</div>
-          <div className="text-sm text-gray-600">Events Shared</div>
-        </div>
-        <div className="card text-center">
-          <div className="text-3xl font-bold text-purple-600">234</div>
-          <div className="text-sm text-gray-600">Tips Shared</div>
-        </div>
-      </div>
-
-      {/* Create Post Card */}
-      <div className="card">
-        <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-            <span className="text-lg">{user?.name?.charAt(0) || '👤'}</span>
+        {/* Marketplace Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
+            <div className="text-3xl font-bold text-primary-600">{products.length}</div>
+            <div className="text-gray-600">Active Listings</div>
           </div>
-          <div className="flex-1">
-            <input
-              type="text"
-              placeholder="Share your eco-journey with the community..."
-              className="input-field"
-            />
+          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
+            <div className="text-3xl font-bold text-green-600">{products.filter(p => p.inStock).length}</div>
+            <div className="text-gray-600">In Stock</div>
           </div>
-          <button className="btn-primary">Post</button>
+          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
+            <div className="text-3xl font-bold text-blue-600">{new Set(products.map(p => p.seller.name)).size}</div>
+            <div className="text-gray-600">Active Sellers</div>
+          </div>
+          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
+            <div className="text-3xl font-bold text-purple-600">1.2K+</div>
+            <div className="text-gray-600">Community Members</div>
+          </div>
         </div>
-      </div>
 
-      {/* Posts Feed */}
-      <div className="space-y-6">
-        {posts.map((post) => (
-          <div key={post.id} className="card">
-            {/* Post Header */}
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-                  <span className="text-lg">{post.author.avatar}</span>
-                </div>
-                <div>
-                  <div className="flex items-center space-x-2">
-                    <h3 className="font-semibold text-gray-900">{post.author.name}</h3>
-                    <span className={`badge ${getRoleColor(post.author.role)}`}>
-                      {post.author.role}
+        {/* Search and Filter */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <input
+                type="text"
+                placeholder="Search products, tags, or descriptions..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              />
+            </div>
+            <div className="relative">
+              <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="pl-10 pr-8 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent appearance-none bg-white"
+              >
+                {categories.map(category => (
+                  <option key={category.id} value={category.id}>{category.name}</option>
+                ))}
+              </select>
+            </div>
+            <button className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center space-x-2">
+              <Plus className="h-5 w-5" />
+              <span>List Product</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Products Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {filteredProducts.map((product) => (
+            <div key={product.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+              {/* Product Image */}
+              <div className="h-48 bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center text-6xl">
+                {product.image}
+              </div>
+
+              {/* Product Info */}
+              <div className="p-6">
+                {/* Category Badge */}
+                <div className="flex items-center space-x-2 mb-3">
+                  {getCategoryIcon(product.category)}
+                  <span className="text-xs font-medium text-primary-600 bg-primary-50 px-2 py-1 rounded-full">
+                    {categories.find(c => c.id === product.category)?.name || 'Other'}
+                  </span>
+                  {!product.inStock && (
+                    <span className="text-xs font-medium text-red-600 bg-red-50 px-2 py-1 rounded-full">
+                      Out of Stock
                     </span>
-                  </div>
-                  <div className="flex items-center space-x-2 text-sm text-gray-500">
-                    <span>Level {post.author.level}</span>
-                    <span>•</span>
-                    <span>{post.author.points} points</span>
-                    <span>•</span>
-                    <span>{post.timestamp}</span>
+                  )}
+                </div>
+
+                {/* Title and Description */}
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{product.title}</h3>
+                <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.description}</p>
+
+                {/* Eco Rating */}
+                <div className="flex items-center space-x-2 mb-4">
+                  <span className="text-sm text-gray-600">Eco Rating:</span>
+                  <span className="text-lg">{getEcoRatingStars(product.ecoRating)}</span>
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-1 mb-4">
+                  {product.tags.map((tag, index) => (
+                    <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Seller Info */}
+                <div className="flex items-center space-x-3 mb-4 p-3 bg-gray-50 rounded-lg">
+                  <div className="text-2xl">{product.seller.avatar}</div>
+                  <div className="flex-1">
+                    <div className="font-medium text-gray-900">{product.seller.name}</div>
+                    <div className="text-sm text-gray-600">
+                      Level {product.seller.level} • {product.seller.points} points
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      ⭐ {product.seller.rating} • {product.seller.sales} sales
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="text-lg">{getCategoryIcon(post.category)}</span>
-                <span className="text-sm text-gray-500 capitalize">{post.category}</span>
+
+                {/* Contact and Location */}
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center space-x-2">
+                    <Phone className="h-4 w-4 text-gray-500" />
+                    <span className="text-sm font-medium text-gray-700">{product.contactNumber}</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <MapPin className="h-4 w-4 text-gray-500" />
+                    <span className="text-sm text-gray-600">{product.location}</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Clock className="h-4 w-4 text-gray-500" />
+                    <span className="text-sm text-gray-600">{product.posted}</span>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex space-x-2">
+                  <button className="flex-1 bg-primary-600 text-white py-2 px-4 rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center justify-center space-x-2">
+                    <Phone className="h-4 w-4" />
+                    <span>Contact</span>
+                  </button>
+                  <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                    <Heart className={`h-4 w-4 ${product.liked ? 'text-red-500 fill-current' : 'text-gray-400'}`} />
+                  </button>
+                </div>
               </div>
             </div>
+          ))}
+        </div>
 
-            {/* Post Content */}
-            <div className="mb-4">
-              <p className="text-gray-900 leading-relaxed">{post.content}</p>
+        {/* Marketplace Guidelines */}
+        <div className="bg-white rounded-xl shadow-lg p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Eco Bazaar Guidelines</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="card bg-green-50 border-green-200">
+              <h4 className="text-lg font-semibold text-green-900 mb-2">For Sellers</h4>
+              <ul className="text-sm text-green-800 space-y-1">
+                <li>• All products must be environmentally friendly and sustainable</li>
+                <li>• Provide accurate descriptions and honest ratings</li>
+                <li>• Include clear contact information</li>
+                <li>• Update stock status regularly</li>
+                <li>• Respond to inquiries promptly</li>
+              </ul>
             </div>
-
-            {/* Post Actions */}
-            <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-              <div className="flex items-center space-x-6">
-                <button
-                  onClick={() => toggleLike(post.id)}
-                  className={`flex items-center space-x-2 ${
-                    post.liked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'
-                  } transition-colors duration-200`}
-                >
-                  <Heart className={`h-5 w-5 ${post.liked ? 'fill-current' : ''}`} />
-                  <span className="text-sm">{post.likes}</span>
-                </button>
-                <button className="flex items-center space-x-2 text-gray-500 hover:text-blue-500 transition-colors duration-200">
-                  <MessageCircle className="h-5 w-5" />
-                  <span className="text-sm">{post.comments}</span>
-                </button>
-                <button className="flex items-center space-x-2 text-gray-500 hover:text-green-500 transition-colors duration-200">
-                  <Share className="h-5 w-5" />
-                  <span className="text-sm">{post.shares}</span>
-                </button>
-              </div>
+            <div className="card bg-blue-50 border-blue-200">
+              <h4 className="text-lg font-semibold text-blue-900 mb-2">For Buyers</h4>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• Contact sellers directly using provided phone numbers</li>
+                <li>• Ask questions before making arrangements</li>
+                <li>• Support local and handmade eco-friendly products</li>
+                <li>• Leave honest feedback after transactions</li>
+                <li>• Report any inappropriate listings to moderators</li>
+              </ul>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* Load More */}
-      <div className="text-center">
-        <button className="btn-secondary">
-          Load More Posts
-        </button>
-      </div>
-
-      {/* Community Guidelines */}
-      <div className="card bg-blue-50 border-blue-200">
-        <h3 className="text-lg font-semibold text-blue-900 mb-2">Community Guidelines</h3>
-        <ul className="text-sm text-blue-800 space-y-1">
-          <li>• Be respectful and supportive of fellow community members</li>
-          <li>• Share authentic experiences and helpful tips</li>
-          <li>• Keep posts relevant to environmental education and sustainability</li>
-          <li>• Report any inappropriate content to moderators</li>
-        </ul>
+        </div>
       </div>
     </div>
   );

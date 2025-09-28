@@ -51,7 +51,9 @@ const corsOptions = {
       process.env.FRONTEND_URL || 'http://localhost:3000',
       'http://localhost:3000',
       'http://localhost:3001',
-      'http://localhost:5173'  // Add Vite dev server port
+      'http://localhost:5173',  // Vite dev server port
+      'http://localhost:5174',  // Vite dev server port
+      'http://localhost:5175'   // Vite dev server port
     ];
     
     if (allowedOrigins.indexOf(origin) !== -1) {

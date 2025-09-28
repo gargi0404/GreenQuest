@@ -339,11 +339,72 @@ const getUserRank = async (userId, options = {}) => {
   }
 };
 
+// Complete a level and award badge
+const completeLevel = async (userId, levelNumber) => {
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // Add level to completed levels if not already completed
+    if (!user.completedLevels) {
+      user.completedLevels = [];
+    }
+    
+    if (!user.completedLevels.includes(levelNumber)) {
+      user.completedLevels.push(levelNumber);
+    }
+
+    // Award points for level completion
+    const points = 100 + (levelNumber * 50); // 150, 200, 250, 300, 350 points
+    user.points += points;
+
+    // Update level based on points
+    user.level = Math.floor(user.points / 500) + 1;
+
+    await user.save();
+
+    // Award level completion badge
+    const badgeName = `Level ${levelNumber} Master`;
+    const badgeResult = await unlockBadge(userId, badgeName);
+
+    return {
+      success: true,
+      levelCompleted: levelNumber,
+      pointsAwarded: points,
+      totalPoints: user.points,
+      newLevel: user.level,
+      badge: badgeResult
+    };
+  } catch (error) {
+    console.error('Error completing level:', error);
+    throw error;
+  }
+};
+
+// Get completed levels for a user
+const getCompletedLevels = async (userId) => {
+  try {
+    const user = await User.findById(userId).select('completedLevels');
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return user.completedLevels || [];
+  } catch (error) {
+    console.error('Error getting completed levels:', error);
+    throw error;
+  }
+};
+
 module.exports = {
   awardPoints,
   unlockBadge,
   checkAndUnlockBadges,
   getUserStats,
   getLeaderboard,
-  getUserRank
+  getUserRank,
+  completeLevel,
+  getCompletedLevels
 };

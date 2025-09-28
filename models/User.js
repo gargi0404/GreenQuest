@@ -58,13 +58,19 @@ const userSchema = new mongoose.Schema({
     min: [0, 'Points cannot be negative']
   },
   badges: [badgeSchema],
+  completedLevels: [{
+    type: Number,
+    min: 1,
+    max: 5
+  }],
   school: {
     type: String,
     trim: true
   },
-  grade: {
-    type: String,
-    trim: true
+  age: {
+    type: Number,
+    min: [5, 'Age must be at least 5'],
+    max: [100, 'Age cannot exceed 100']
   },
   isActive: {
     type: Boolean,

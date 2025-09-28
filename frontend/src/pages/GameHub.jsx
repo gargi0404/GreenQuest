@@ -1,11 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Zap, Recycle, Sun, Wind, Home, Trophy, Star, Lock } from 'lucide-react';
+import { Zap, Recycle, Sun, Wind, Home, Trophy, Star, Lock, CheckCircle } from 'lucide-react';
+import axios from 'axios';
 
 const GameHub = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [completedLevels, setCompletedLevels] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchCompletedLevels();
+  }, []);
+
+  const fetchCompletedLevels = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get('http://localhost:5001/api/gamification/completed-levels', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setCompletedLevels(response.data.completedLevels || []);
+    } catch (error) {
+      console.error('Error fetching completed levels:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const levels = [
     {
@@ -18,7 +39,8 @@ const GameHub = () => {
       borderColor: 'border-red-200',
       unlocked: true,
       questions: 10,
-      estimatedTime: '15-20 minutes'
+      estimatedTime: '15-20 minutes',
+      completed: completedLevels.includes(1)
     },
     {
       id: 2,
@@ -28,9 +50,10 @@ const GameHub = () => {
       color: 'from-green-400 to-blue-500',
       bgColor: 'bg-green-50',
       borderColor: 'border-green-200',
-      unlocked: true,
+      unlocked: completedLevels.includes(1),
       questions: 10,
-      estimatedTime: '15-20 minutes'
+      estimatedTime: '15-20 minutes',
+      completed: completedLevels.includes(2)
     },
     {
       id: 3,
@@ -40,9 +63,10 @@ const GameHub = () => {
       color: 'from-yellow-400 to-orange-500',
       bgColor: 'bg-yellow-50',
       borderColor: 'border-yellow-200',
-      unlocked: false,
+      unlocked: completedLevels.includes(2),
       questions: 10,
-      estimatedTime: '15-20 minutes'
+      estimatedTime: '15-20 minutes',
+      completed: completedLevels.includes(3)
     },
     {
       id: 4,
@@ -52,9 +76,10 @@ const GameHub = () => {
       color: 'from-purple-400 to-pink-500',
       bgColor: 'bg-purple-50',
       borderColor: 'border-purple-200',
-      unlocked: false,
+      unlocked: completedLevels.includes(3),
       questions: 10,
-      estimatedTime: '15-20 minutes'
+      estimatedTime: '15-20 minutes',
+      completed: completedLevels.includes(4)
     },
     {
       id: 5,
@@ -64,9 +89,10 @@ const GameHub = () => {
       color: 'from-blue-400 to-cyan-500',
       bgColor: 'bg-blue-50',
       borderColor: 'border-blue-200',
-      unlocked: false,
+      unlocked: completedLevels.includes(4),
       questions: 10,
-      estimatedTime: '15-20 minutes'
+      estimatedTime: '15-20 minutes',
+      completed: completedLevels.includes(5)
     }
   ];
 
@@ -124,11 +150,18 @@ const GameHub = () => {
                 <div className={`text-4xl p-3 rounded-full bg-gradient-to-r ${level.color} text-white shadow-md`}>
                   {level.icon}
                 </div>
-                {!level.unlocked && (
-                  <div className="text-gray-400">
-                    <Lock className="h-6 w-6" />
-                  </div>
-                )}
+                <div className="flex space-x-2">
+                  {level.completed && (
+                    <div className="text-green-500">
+                      <CheckCircle className="h-6 w-6" />
+                    </div>
+                  )}
+                  {!level.unlocked && (
+                    <div className="text-gray-400">
+                      <Lock className="h-6 w-6" />
+                    </div>
+                  )}
+                </div>
               </div>
 
               <h3 className="text-xl font-bold text-gray-800 mb-2">{level.title}</h3>
@@ -146,7 +179,11 @@ const GameHub = () => {
               </div>
 
               <div className="mt-4">
-                {level.unlocked ? (
+                {level.completed ? (
+                  <button className="w-full py-2 px-4 rounded-lg font-semibold bg-green-500 text-white cursor-default">
+                    ✅ Completed
+                  </button>
+                ) : level.unlocked ? (
                   <button className={`w-full py-2 px-4 rounded-lg font-semibold bg-gradient-to-r ${level.color} text-white hover:shadow-md transition-all duration-200`}>
                     Start Level
                   </button>
@@ -165,15 +202,15 @@ const GameHub = () => {
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Your Progress</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">2/5</div>
+              <div className="text-3xl font-bold text-green-600 mb-2">{completedLevels.length}/5</div>
               <div className="text-gray-600">Levels Completed</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">20/50</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">{completedLevels.length * 10}/50</div>
               <div className="text-gray-600">Questions Answered</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">3</div>
+              <div className="text-3xl font-bold text-purple-600 mb-2">{completedLevels.length}</div>
               <div className="text-gray-600">Badges Earned</div>
             </div>
           </div>

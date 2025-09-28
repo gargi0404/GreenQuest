@@ -6,7 +6,9 @@ const {
   unlockBadge, 
   getUserStats, 
   getLeaderboard, 
-  getUserRank 
+  getUserRank,
+  completeLevel,
+  getCompletedLevels
 } = require('../services/gamification');
 const { authMiddleware, requireAdmin, requireTeacherOrAdmin } = require('../middleware/auth');
 
@@ -429,6 +431,64 @@ router.delete('/badges/:id', authMiddleware, requireAdmin, async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Server error while deleting badge'
+    });
+  }
+});
+
+// @desc    Complete a level
+// @route   POST /api/gamification/complete-level
+// @access  Private
+router.post('/complete-level', authMiddleware, [
+  body('levelNumber')
+    .isInt({ min: 1, max: 5 })
+    .withMessage('Level number must be between 1 and 5')
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: errors.array()
+      });
+    }
+
+    const { levelNumber } = req.body;
+    const userId = req.user.id;
+
+    const result = await completeLevel(userId, levelNumber);
+
+    res.json({
+      success: true,
+      message: `Level ${levelNumber} completed successfully!`,
+      data: result
+    });
+  } catch (error) {
+    console.error('Complete level error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error while completing level'
+    });
+  }
+});
+
+// @desc    Get completed levels for user
+// @route   GET /api/gamification/completed-levels
+// @access  Private
+router.get('/completed-levels', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const completedLevels = await getCompletedLevels(userId);
+
+    res.json({
+      success: true,
+      data: { completedLevels }
+    });
+  } catch (error) {
+    console.error('Get completed levels error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error while fetching completed levels'
     });
   }
 });

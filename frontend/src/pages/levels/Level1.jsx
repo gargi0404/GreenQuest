@@ -360,7 +360,7 @@ const Level1 = () => {
   const allCompleted = Object.keys(feedback).length === GAMES.length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 relative">
+    <div className="bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 relative">
       {/* Power-up Effects */}
       {showPowerUpEffect && (
         <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">

@@ -33,12 +33,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
-          <Route path="/game" element={<GameHub />} />
-          <Route path="/game/level-1" element={<Level1 />} />
-          <Route path="/game/level-2" element={<Level2 />} />
-          <Route path="/game/level-3" element={<Level3 />} />
-          <Route path="/game/level-4" element={<Level4 />} />
-          <Route path="/game/level-5" element={<Level5 />} />
           
           {/* Protected routes */}
           <Route path="/" element={<Layout />}>
@@ -95,6 +89,54 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Settings />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="game" 
+              element={
+                <ProtectedRoute>
+                  <GameHub />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="game/level-1" 
+              element={
+                <ProtectedRoute>
+                  <Level1 />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="game/level-2" 
+              element={
+                <ProtectedRoute>
+                  <Level2 />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="game/level-3" 
+              element={
+                <ProtectedRoute>
+                  <Level3 />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="game/level-4" 
+              element={
+                <ProtectedRoute>
+                  <Level4 />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="game/level-5" 
+              element={
+                <ProtectedRoute>
+                  <Level5 />
                 </ProtectedRoute>
               } 
             />

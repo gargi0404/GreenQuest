@@ -229,7 +229,7 @@ const Level4 = () => {
   const allCompleted = Object.keys(feedback).length === GAMES.length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
+    <div className="bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
       <GameHUD
         levelTitle="Eco-Mission Escape - Level 4"
         score={score}

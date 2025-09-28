@@ -103,7 +103,7 @@ const GameHub = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
+    <div className="bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
       {/* Header */}
       <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white py-12">
         <div className="max-w-6xl mx-auto px-4 text-center">

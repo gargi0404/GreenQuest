@@ -50,15 +50,20 @@ const corsOptions = {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     
+    // Allow all localhost origins for development
+    if (origin.startsWith('http://localhost:')) {
+      return callback(null, true);
+    }
+    
+    // Allow all Vercel domains
+    if (origin.includes('.vercel.app')) {
+      return callback(null, true);
+    }
+    
+    // Allow specific production domains
     const allowedOrigins = [
       process.env.FRONTEND_URL || 'http://localhost:3000',
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'http://localhost:5173',  // Vite dev server port
-      'http://localhost:5174',  // Vite dev server port
-      'http://localhost:5175',  // Vite dev server port
-      'https://green-quest2727.vercel.app',  // Vercel deployment
-      'https://green-quest2727-c9ryhgu04-gargis-projects-a51375f2.vercel.app'  // Vercel preview deployment
+      'https://green-quest2727.vercel.app'
     ];
     
     if (allowedOrigins.indexOf(origin) !== -1) {

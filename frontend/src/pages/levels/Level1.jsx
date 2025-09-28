@@ -298,10 +298,13 @@ const Level1 = () => {
 
   const awardXP = async (points) => {
     try {
+      const token = localStorage.getItem('token');
       await axios.post(`${API_BASE_URL}/gamification/award-points`, {
         userId: user.id,
         points,
         reason: 'Level completion bonus'
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
       });
     } catch (error) {
       console.error('Error awarding XP:', error);
@@ -322,8 +325,11 @@ const Level1 = () => {
     }
     
     try {
+      const token = localStorage.getItem('token');
       const response = await axios.post(`${API_BASE_URL}/gamification/complete-level`, {
         levelNumber: 1
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
       });
       
       if (response.data.success) {

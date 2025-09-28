@@ -27,6 +27,18 @@ const Level1 = () => {
   const [showCollectible, setShowCollectible] = useState(null);
   const [multiplier, setMultiplier] = useState(1);
   const [perfectStreak, setPerfectStreak] = useState(0);
+  const [showHint, setShowHint] = useState(false);
+  const [hintUsed, setHintUsed] = useState(false);
+
+  const useHint = () => {
+    if (hintsUsed < 3 && !hintUsed) {
+      setHintsUsed(prev => prev + 1);
+      setHintUsed(true);
+      setShowHint(true);
+      // Energy cost for using hint
+      setEnergyLevel(prev => Math.max(0, prev - 5));
+    }
+  };
 
   // Power-up definitions
   const POWER_UPS = [
@@ -430,7 +442,29 @@ const Level1 = () => {
 
           {/* Game Card */}
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg p-8 mb-6 border-2 border-blue-200">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">🎯 {currentGame.question}</h2>
+            <div className="flex justify-between items-start mb-6">
+              <h2 className="text-2xl font-bold text-gray-800">🎯 {currentGame.question}</h2>
+              <button
+                onClick={useHint}
+                disabled={hintsUsed >= 3 || hintUsed}
+                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                  hintsUsed >= 3 || hintUsed
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-yellow-400 hover:bg-yellow-500 text-gray-800 hover:scale-105 shadow-lg'
+                }`}
+              >
+                💡 Hint ({3 - hintsUsed} left)
+              </button>
+            </div>
+            
+            {showHint && currentGame.hint && (
+              <div className="mb-6 p-4 bg-yellow-100 border-2 border-yellow-300 rounded-lg">
+                <div className="flex items-center space-x-2">
+                  <span className="text-2xl">💡</span>
+                  <p className="text-gray-800 font-medium">{currentGame.hint}</p>
+                </div>
+              </div>
+            )}
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {currentGame.options.map((option) => (
@@ -494,7 +528,11 @@ const Level1 = () => {
           {/* Navigation */}
           <div className="flex justify-between items-center">
             <button
-              onClick={() => setCurrentGameIndex(prev => Math.max(0, prev - 1))}
+              onClick={() => {
+                setCurrentGameIndex(prev => Math.max(0, prev - 1));
+                setShowHint(false);
+                setHintUsed(false);
+              }}
               disabled={currentGameIndex === 0}
               className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200"
             >
@@ -502,7 +540,11 @@ const Level1 = () => {
             </button>
             
             <button
-              onClick={() => setCurrentGameIndex(prev => Math.min(GAMES.length - 1, prev + 1))}
+              onClick={() => {
+                setCurrentGameIndex(prev => Math.min(GAMES.length - 1, prev + 1));
+                setShowHint(false);
+                setHintUsed(false);
+              }}
               disabled={currentGameIndex === GAMES.length - 1}
               className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200"
             >

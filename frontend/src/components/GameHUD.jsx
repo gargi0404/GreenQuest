@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Zap, Star, Heart, Clock, Target, Trophy, Sparkles } from 'lucide-react';
 
 export default function GameHUD({
   levelTitle,
@@ -15,15 +14,14 @@ export default function GameHUD({
   powerUps = [],
   onUsePowerUp,
   collectibles = [],
-  xpGained = 0,
-  energyLevel = 100
+  energyLevel = 100,
+  multiplier = 1,
+  perfectStreak = 0
 }) {
   const { user } = useAuth();
   const [showCombo, setShowCombo] = useState(false);
   const [showStreak, setShowStreak] = useState(false);
-  const [showXPGain, setShowXPGain] = useState(false);
   const [timeWarning, setTimeWarning] = useState(false);
-  const [showPowerUp, setShowPowerUp] = useState(null);
 
   const minutes = Math.floor(timeRemainingSec / 60);
   const seconds = timeRemainingSec % 60;
@@ -45,15 +43,6 @@ export default function GameHUD({
       return () => clearTimeout(timer);
     }
   }, [streak]);
-
-  // Show XP gain animation
-  useEffect(() => {
-    if (xpGained > 0) {
-      setShowXPGain(true);
-      const timer = setTimeout(() => setShowXPGain(false), 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [xpGained]);
 
   // Time warning
   useEffect(() => {
@@ -95,19 +84,30 @@ export default function GameHUD({
 
           {/* Center Section - Score and Stats */}
           <div className="flex items-center space-x-6">
-            {/* Score */}
+            {/* Score with Multiplier */}
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900">{score}</div>
+              <div className="text-2xl font-bold text-gray-900 flex items-center justify-center space-x-1">
+                <span>{score}</span>
+                {multiplier > 1 && (
+                  <span className="text-yellow-500 text-lg">×{multiplier}</span>
+                )}
+              </div>
               <div className="text-xs text-gray-600">Score</div>
             </div>
 
-            {/* XP Gained */}
-            {showXPGain && (
-              <div className="text-center animate-bounce">
-                <div className="text-lg font-bold text-green-600">+{xpGained} XP</div>
-                <div className="text-xs text-green-600">Experience</div>
+            {/* Energy Level */}
+            <div className="text-center">
+              <div className="text-lg font-bold text-gray-900">{energyLevel}%</div>
+              <div className="w-16 bg-gray-200 rounded-full h-2">
+                <div 
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    energyLevel > 50 ? 'bg-green-500' : energyLevel > 25 ? 'bg-yellow-500' : 'bg-red-500'
+                  }`}
+                  style={{ width: `${energyLevel}%` }}
+                ></div>
               </div>
-            )}
+              <div className="text-xs text-gray-600">Energy</div>
+            </div>
 
             {/* Time */}
             <div className={`text-center ${timeWarning ? 'animate-pulse' : ''}`}>
@@ -124,19 +124,18 @@ export default function GameHUD({
               </div>
               <div className="text-xs text-gray-600">Hints</div>
             </div>
-
-            {/* Energy Level */}
-            <div className="text-center">
-              <div className="flex items-center space-x-1">
-                <Heart className="h-4 w-4 text-red-500" />
-                <span className="text-lg font-bold text-gray-900">{energyLevel}</span>
-              </div>
-              <div className="text-xs text-gray-600">Energy</div>
-            </div>
           </div>
 
           {/* Right Section - Streak, Combo, Power-ups, Quit */}
           <div className="flex items-center space-x-4">
+            {/* Perfect Streak */}
+            {perfectStreak > 0 && (
+              <div className="text-center">
+                <div className="text-lg font-bold text-yellow-600">⭐ {perfectStreak}</div>
+                <div className="text-xs text-gray-600">Perfect</div>
+              </div>
+            )}
+
             {/* Streak */}
             {streak > 0 && (
               <div className={`text-center transition-all duration-300 ${showStreak ? 'scale-110' : ''}`}>
@@ -155,13 +154,13 @@ export default function GameHUD({
 
             {/* Power-ups */}
             {powerUps.length > 0 && (
-              <div className="flex items-center space-x-2">
-                {powerUps.map((powerUp, index) => (
+              <div className="flex space-x-1">
+                {powerUps.slice(0, 3).map((powerUp, index) => (
                   <button
                     key={index}
-                    onClick={() => onUsePowerUp && onUsePowerUp(powerUp)}
-                    className="p-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105"
-                    title={powerUp.name}
+                    onClick={() => onUsePowerUp(powerUp)}
+                    className="p-1 bg-yellow-100 hover:bg-yellow-200 rounded-full transition-colors duration-200"
+                    title={powerUp.description}
                   >
                     {powerUp.icon}
                   </button>
@@ -171,9 +170,16 @@ export default function GameHUD({
 
             {/* Collectibles */}
             {collectibles.length > 0 && (
-              <div className="flex items-center space-x-1">
-                <Sparkles className="h-4 w-4 text-yellow-500" />
-                <span className="text-sm font-bold text-yellow-600">{collectibles.length}</span>
+              <div className="flex space-x-1">
+                {collectibles.slice(-3).map((collectible, index) => (
+                  <div
+                    key={index}
+                    className="text-lg"
+                    title={`${collectible.name} (+${collectible.points} points)`}
+                  >
+                    {collectible.icon}
+                  </div>
+                ))}
               </div>
             )}
 

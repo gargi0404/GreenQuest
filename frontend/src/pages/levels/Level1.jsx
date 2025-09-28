@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import GameHUD from '../../components/GameHUD';
+import { Zap, Star, Heart, Shield, Clock, Target, Trophy, Sparkles } from 'lucide-react';
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:5001/api';
@@ -21,65 +22,58 @@ const Level1 = () => {
   const [showAchievement, setShowAchievement] = useState(null);
   const [powerUps, setPowerUps] = useState([]);
   const [collectibles, setCollectibles] = useState([]);
-  const [xpGained, setXpGained] = useState(0);
   const [energyLevel, setEnergyLevel] = useState(100);
   const [showPowerUpEffect, setShowPowerUpEffect] = useState(null);
+  const [showCollectible, setShowCollectible] = useState(null);
+  const [multiplier, setMultiplier] = useState(1);
+  const [perfectStreak, setPerfectStreak] = useState(0);
 
-  // Power-ups available in this level
+  // Power-up definitions
   const POWER_UPS = [
     {
       id: 'time_boost',
       name: 'Time Boost',
-      icon: '⏰',
-      description: 'Adds 30 seconds to the timer',
-      effect: () => {
-        setTimeRemaining(prev => prev + 30);
-        setShowPowerUpEffect('⏰ +30 seconds!');
-        setTimeout(() => setShowPowerUpEffect(null), 2000);
-      }
-    },
-    {
-      id: 'hint_reveal',
-      name: 'Hint Reveal',
-      icon: '💡',
-      description: 'Reveals the correct answer',
-      effect: () => {
-        const currentGame = GAMES[currentGameIndex];
-        setAnswers(prev => ({ ...prev, [currentGame.id]: currentGame.correct }));
-        setShowPowerUpEffect('💡 Answer revealed!');
-        setTimeout(() => setShowPowerUpEffect(null), 2000);
-      }
+      icon: <Clock className="h-4 w-4" />,
+      description: 'Adds 30 seconds to timer',
+      effect: () => setTimeRemaining(prev => prev + 30),
+      rarity: 'common'
     },
     {
       id: 'score_multiplier',
-      name: 'Score Multiplier',
-      icon: '⭐',
-      description: '2x points for next 3 answers',
+      name: 'Score Doubler',
+      icon: <Star className="h-4 w-4" />,
+      description: 'Doubles next answer score',
+      effect: () => setMultiplier(2),
+      rarity: 'uncommon'
+    },
+    {
+      id: 'hint_reveal',
+      name: 'Smart Hint',
+      icon: <Target className="h-4 w-4" />,
+      description: 'Reveals correct answer',
       effect: () => {
-        setCombo(prev => Math.max(prev, 2));
-        setShowPowerUpEffect('⭐ 2x Score Active!');
-        setTimeout(() => setShowPowerUpEffect(null), 2000);
-      }
+        const currentGame = GAMES[currentGameIndex];
+        setAnswers(prev => ({ ...prev, [currentGame.id]: currentGame.correct }));
+      },
+      rarity: 'rare'
     },
     {
       id: 'energy_boost',
       name: 'Energy Boost',
-      icon: '⚡',
-      description: 'Restores 25 energy',
-      effect: () => {
-        setEnergyLevel(prev => Math.min(100, prev + 25));
-        setShowPowerUpEffect('⚡ +25 Energy!');
-        setTimeout(() => setShowPowerUpEffect(null), 2000);
-      }
+      icon: <Zap className="h-4 w-4" />,
+      description: 'Restores energy to 100%',
+      effect: () => setEnergyLevel(100),
+      rarity: 'common'
     }
   ];
 
-  // Collectibles that can be found
+  // Collectibles definitions
   const COLLECTIBLES = [
-    { id: 'eco_coin', name: 'Eco Coin', icon: '🪙', points: 50 },
-    { id: 'green_gem', name: 'Green Gem', icon: '💚', points: 100 },
-    { id: 'solar_crystal', name: 'Solar Crystal', icon: '☀️', points: 75 },
-    { id: 'wind_token', name: 'Wind Token', icon: '💨', points: 60 }
+    { id: 'eco_gem', name: 'Eco Gem', icon: '💎', points: 50, rarity: 'rare' },
+    { id: 'green_leaf', name: 'Green Leaf', icon: '🍃', points: 25, rarity: 'common' },
+    { id: 'solar_crystal', name: 'Solar Crystal', icon: '☀️', points: 75, rarity: 'epic' },
+    { id: 'wind_feather', name: 'Wind Feather', icon: '🪶', points: 30, rarity: 'uncommon' },
+    { id: 'water_drop', name: 'Water Drop', icon: '💧', points: 20, rarity: 'common' }
   ];
 
   const GAMES = [
@@ -233,15 +227,17 @@ const Level1 = () => {
     const isCorrect = answer === game.correct;
     let points = isCorrect ? game.points : 0;
     
-    // Apply combo multiplier
-    if (isCorrect && combo > 1) {
-      points = Math.floor(points * combo);
+    // Apply multiplier
+    points = points * multiplier;
+    
+    // Perfect streak bonus
+    if (isCorrect && streak >= 3) {
+      points += Math.floor(points * 0.2); // 20% bonus for streaks
     }
     
-    // Apply streak bonus
-    if (isCorrect && streak > 0) {
-      points += Math.floor(streak * 5);
-    }
+    // Energy cost
+    const energyCost = 10;
+    setEnergyLevel(prev => Math.max(0, prev - energyCost));
     
     setFeedback(prev => ({ ...prev, [game.id]: { correct: isCorrect, points } }));
     
@@ -249,31 +245,43 @@ const Level1 = () => {
       setScore(prev => prev + points);
       setStreak(prev => prev + 1);
       setCombo(prev => prev + 1);
+      setPerfectStreak(prev => prev + 1);
       
-      // Award XP
-      const xpEarned = Math.floor(points / 2);
-      setXpGained(xpEarned);
+      // Chance to spawn collectible
+      if (Math.random() < 0.3) {
+        const collectible = COLLECTIBLES[Math.floor(Math.random() * COLLECTIBLES.length)];
+        setCollectibles(prev => [...prev, collectible]);
+        setShowCollectible(collectible);
+        setTimeout(() => setShowCollectible(null), 2000);
+      }
       
-      // Random collectible chance (20%)
+      // Chance to get power-up
       if (Math.random() < 0.2) {
-        const randomCollectible = COLLECTIBLES[Math.floor(Math.random() * COLLECTIBLES.length)];
-        setCollectibles(prev => [...prev, randomCollectible]);
-        setScore(prev => prev + randomCollectible.points);
+        const powerUp = POWER_UPS[Math.floor(Math.random() * POWER_UPS.length)];
+        setPowerUps(prev => [...prev, powerUp]);
       }
-      
-      // Random power-up chance (15%)
-      if (Math.random() < 0.15 && powerUps.length < 3) {
-        const randomPowerUp = POWER_UPS[Math.floor(Math.random() * POWER_UPS.length)];
-        setPowerUps(prev => [...prev, randomPowerUp]);
-      }
-      
-      // Energy consumption
-      setEnergyLevel(prev => Math.max(0, prev - 5));
     } else {
       setStreak(0);
       setCombo(0);
-      setEnergyLevel(prev => Math.max(0, prev - 10));
+      setPerfectStreak(0);
     }
+    
+    // Reset multiplier after use
+    if (multiplier > 1) {
+      setMultiplier(1);
+    }
+  };
+
+  const usePowerUp = (powerUp) => {
+    powerUp.effect();
+    setPowerUps(prev => prev.filter(p => p.id !== powerUp.id));
+    setShowPowerUpEffect(powerUp);
+    setTimeout(() => setShowPowerUpEffect(null), 2000);
+  };
+
+  const addCollectible = (collectible) => {
+    setCollectibles(prev => [...prev, collectible]);
+    setScore(prev => prev + collectible.points);
   };
 
   const awardXP = async (points) => {
@@ -286,16 +294,6 @@ const Level1 = () => {
     } catch (error) {
       console.error('Error awarding XP:', error);
     }
-  };
-
-  const usePowerUp = (powerUp) => {
-    powerUp.effect();
-    setPowerUps(prev => prev.filter(p => p.id !== powerUp.id));
-  };
-
-  const addCollectible = (collectible) => {
-    setCollectibles(prev => [...prev, collectible]);
-    setScore(prev => prev + collectible.points);
   };
 
   const handleLevelComplete = async () => {
@@ -338,7 +336,29 @@ const Level1 = () => {
   const allCompleted = Object.keys(feedback).length === GAMES.length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 relative">
+      {/* Power-up Effects */}
+      {showPowerUpEffect && (
+        <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
+          <div className="bg-yellow-400 text-black px-6 py-3 rounded-full text-xl font-bold animate-bounce">
+            {showPowerUpEffect.icon} {showPowerUpEffect.name} Activated!
+          </div>
+        </div>
+      )}
+
+      {/* Collectible Notification */}
+      {showCollectible && (
+        <div className="fixed top-20 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-40 animate-pulse">
+          <div className="flex items-center space-x-2">
+            <span className="text-2xl">{showCollectible.icon}</span>
+            <div>
+              <div className="font-bold">{showCollectible.name} Found!</div>
+              <div className="text-sm">+{showCollectible.points} points</div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <GameHUD
         levelTitle="Carbon Detective - Level 1"
         score={score}
@@ -352,8 +372,9 @@ const Level1 = () => {
         powerUps={powerUps}
         onUsePowerUp={usePowerUp}
         collectibles={collectibles}
-        xpGained={xpGained}
         energyLevel={energyLevel}
+        multiplier={multiplier}
+        perfectStreak={perfectStreak}
       />
 
       <div className="pt-20 p-6">
@@ -429,29 +450,6 @@ const Level1 = () => {
               Next
             </button>
           </div>
-
-          {/* Power-up Effect Display */}
-          {showPowerUpEffect && (
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white rounded-lg shadow-2xl p-6 text-center animate-bounce">
-              <div className="text-4xl mb-2">{showPowerUpEffect}</div>
-              <div className="text-lg font-semibold text-gray-800">Power-up Activated!</div>
-            </div>
-          )}
-
-          {/* Collectibles Display */}
-          {collectibles.length > 0 && (
-            <div className="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 z-40">
-              <h3 className="text-sm font-semibold text-gray-800 mb-2">Collectibles Found:</h3>
-              <div className="flex space-x-2">
-                {collectibles.map((collectible, index) => (
-                  <div key={index} className="text-center">
-                    <div className="text-2xl">{collectible.icon}</div>
-                    <div className="text-xs text-gray-600">{collectible.name}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* Complete Level Button */}
           <div className="text-center mt-8">

@@ -20,6 +20,7 @@ const Level1 = () => {
   const [answers, setAnswers] = useState({});
   const [feedback, setFeedback] = useState({});
   const [showAchievement, setShowAchievement] = useState(null);
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [powerUps, setPowerUps] = useState([]);
   const [collectibles, setCollectibles] = useState([]);
   const [energyLevel, setEnergyLevel] = useState(100);
@@ -344,11 +345,16 @@ const Level1 = () => {
       console.error('Error awarding level completion badge:', error);
     }
     
-    alert(`Level Complete!\nScore: ${finalScore}\nAccuracy: ${accuracy.toFixed(1)}%\nBonus XP: ${totalBonus}`);
-    navigate('/game');
+    // Show completion modal
+    setShowCompletionModal(true);
   };
 
   const quit = () => navigate('/game');
+  
+  const closeCompletionModal = () => {
+    setShowCompletionModal(false);
+    navigate('/game');
+  };
 
   const currentGame = GAMES[currentGameIndex];
   const allCompleted = Object.keys(feedback).length === GAMES.length;
@@ -574,6 +580,31 @@ const Level1 = () => {
           </div>
         </div>
       </div>
+
+      {/* Level Completion Modal */}
+      {showCompletionModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-8 max-w-md mx-4 text-center shadow-2xl">
+            <div className="text-6xl mb-4">🎉</div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Level Complete!</h2>
+            <div className="space-y-2 text-gray-600 mb-6">
+              <p>Score: <span className="font-bold text-green-600">{score}</span></p>
+              <p>Accuracy: <span className="font-bold text-blue-600">{((Object.values(feedback).filter(f => f.correct).length / GAMES.length) * 100).toFixed(1)}%</span></p>
+              <p>Perfect Streak: <span className="font-bold text-yellow-600">{perfectStreak}</span></p>
+            </div>
+            <div className="bg-green-100 border-2 border-green-300 rounded-lg p-4 mb-6">
+              <p className="text-green-800 font-medium">🏆 Level 1 Master Badge Earned!</p>
+              <p className="text-sm text-green-600">Level 2 is now unlocked!</p>
+            </div>
+            <button
+              onClick={closeCompletionModal}
+              className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 px-6 rounded-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all duration-200"
+            >
+              Continue to GameHub
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

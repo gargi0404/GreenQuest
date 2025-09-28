@@ -57,11 +57,9 @@ const seedUsers = async () => {
 
     // Create new test users
     for (const userData of testUsers) {
-      const hashedPassword = await bcrypt.hash(userData.password, 10);
-      
       const user = new User({
         ...userData,
-        passwordHash: hashedPassword
+        passwordHash: userData.password // Let the pre-save middleware hash it
       });
       
       await user.save();

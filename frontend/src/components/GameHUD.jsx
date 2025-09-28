@@ -47,7 +47,8 @@ export default function GameHUD({
     const currentLevelXP = (user?.level || 1) * 100;
     const nextLevelXP = ((user?.level || 1) + 1) * 100;
     const progress = ((user?.points || 0) % 100) / 100;
-    return progress * 100;
+    const result = progress * 100;
+    return isNaN(result) ? 0 : result;
   };
 
   return (

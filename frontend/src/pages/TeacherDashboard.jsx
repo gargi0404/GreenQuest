@@ -228,7 +228,7 @@ const TeacherDashboard = () => {
                     <div className="w-full bg-gray-200 rounded-full h-2">
                       <div
                         className="bg-primary-600 h-2 rounded-full"
-                        style={{ width: `${(challenge.studentsCompleted / challenge.totalStudents) * 100}%` }}
+                        style={{ width: `${challenge.totalStudents > 0 ? (challenge.studentsCompleted / challenge.totalStudents) * 100 : 0}%` }}
                       ></div>
                     </div>
                   </div>

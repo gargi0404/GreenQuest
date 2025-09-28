@@ -156,7 +156,7 @@ const GameRules = () => {
 
         {/* Active Level Details */}
         {activeLevel && (
-          <div className={`bg-white rounded-xl shadow-lg p-8 border-b-4 ${levels[activeLevel].color.split(' ')[2].replace('to-', 'border-')} mb-12`}>
+          <div className={`bg-white rounded-xl shadow-lg p-8 border-b-4 border-primary-400 mb-12`}>
             <div className="flex items-center space-x-4 mb-4">
               <div className={`text-5xl p-3 rounded-full bg-gradient-to-r ${levels[activeLevel].color} text-white shadow-md`}>
                 {levels[activeLevel].icon}

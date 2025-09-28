@@ -363,8 +363,6 @@ const completeLevel = async (userId, levelNumber) => {
     // Update level based on points
     user.level = Math.floor(user.points / 500) + 1;
 
-    await user.save();
-
     // Award level completion badge
     const badgeNames = {
       1: 'Carbon Detective',
@@ -374,7 +372,23 @@ const completeLevel = async (userId, levelNumber) => {
       5: 'City Planning Expert'
     };
     const badgeName = badgeNames[levelNumber];
-    const badgeResult = await unlockBadge(userId, badgeName);
+    
+    // Add badge directly to user (bypassing point requirements for level completion)
+    const badge = await Badge.findOne({ name: badgeName, isActive: true });
+    if (badge) {
+      const hasBadge = user.badges.some(userBadge => userBadge.name === badgeName);
+      if (!hasBadge) {
+        user.badges.push({
+          name: badge.name,
+          description: badge.description,
+          icon: badge.icon,
+          category: badge.category,
+          earnedAt: new Date()
+        });
+      }
+    }
+
+    await user.save();
 
     return {
       success: true,
@@ -382,7 +396,16 @@ const completeLevel = async (userId, levelNumber) => {
       pointsAwarded: points,
       totalPoints: user.points,
       newLevel: user.level,
-      badge: badgeResult
+      badge: badge ? {
+        success: true,
+        message: 'Badge unlocked successfully',
+        badge: {
+          name: badge.name,
+          description: badge.description,
+          icon: badge.icon,
+          category: badge.category
+        }
+      } : null
     };
   } catch (error) {
     console.error('Error completing level:', error);

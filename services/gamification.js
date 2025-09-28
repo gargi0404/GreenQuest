@@ -366,7 +366,14 @@ const completeLevel = async (userId, levelNumber) => {
     await user.save();
 
     // Award level completion badge
-    const badgeName = `Level ${levelNumber} Master`;
+    const badgeNames = {
+      1: 'Carbon Detective',
+      2: 'Renewable Ranger', 
+      3: 'Clean Energy Tycoon',
+      4: 'Eco Escape Master',
+      5: 'City Planning Expert'
+    };
+    const badgeName = badgeNames[levelNumber];
     const badgeResult = await unlockBadge(userId, badgeName);
 
     return {

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import {
-  BookOpen, Target, Users, Award, Clock,
-  Zap, Leaf, Recycle, Sun, Wind, Home, Trophy,
-  Flame
+  BookOpen, Users, Clock,
+  Zap, Leaf, Recycle, Sun, Wind, Home, Trophy
 } from 'lucide-react';
 
 const GameRules = () => {
@@ -186,7 +185,7 @@ const GameRules = () => {
         )}
 
         {/* Quick Stats */}
-        <div className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl shadow-lg p-8 text-center">
+        <div className="bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-xl shadow-lg p-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to become an Eco-Hero?</h2>
           <p className="text-lg mb-6">Join thousands of students making a difference!</p>
           <div className="flex justify-center space-x-8">

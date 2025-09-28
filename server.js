@@ -136,13 +136,14 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`
 🚀 GreenQuest API Server is running!
 📍 Port: ${PORT}
 🌍 Environment: ${process.env.NODE_ENV || 'development'}
-🔗 Health Check: http://localhost:${PORT}/health
-📚 API Docs: http://localhost:${PORT}/
+🔗 Health Check: http://0.0.0.0:${PORT}/health
+📚 API Docs: http://0.0.0.0:${PORT}/
+🌐 Network Access: Available on all network interfaces
   `);
 });
 

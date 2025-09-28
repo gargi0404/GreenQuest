@@ -385,22 +385,31 @@ const Level1 = () => {
             <p className="text-xl text-gray-600">Master the art of eco-detection! Answer questions to unlock power-ups and collectibles.</p>
           </div>
 
-          {/* Game Mechanics Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-              <div className="text-3xl mb-3">🔥</div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Build Streaks</h3>
-              <p className="text-gray-600 text-sm">Chain correct answers to build streaks and earn combo multipliers!</p>
+          {/* Gamification Status Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div className="bg-white rounded-xl shadow-lg p-4 text-center">
+              <div className="text-2xl mb-2">⚡</div>
+              <h3 className="text-sm font-semibold text-gray-800 mb-1">Power-ups</h3>
+              <p className="text-lg font-bold text-yellow-600">{powerUps.length}</p>
+              <p className="text-xs text-gray-500">Available</p>
             </div>
-            <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-              <div className="text-3xl mb-3">👥</div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Teamwork Allowed</h3>
-              <p className="text-gray-600 text-sm">Work together on puzzles, but individual answers are required for questions</p>
+            <div className="bg-white rounded-xl shadow-lg p-4 text-center">
+              <div className="text-2xl mb-2">💎</div>
+              <h3 className="text-sm font-semibold text-gray-800 mb-1">Collectibles</h3>
+              <p className="text-lg font-bold text-green-600">{collectibles.length}</p>
+              <p className="text-xs text-gray-500">Found</p>
             </div>
-            <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-              <div className="text-3xl mb-3">🏆</div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">Earn Rewards</h3>
-              <p className="text-gray-600 text-sm">Collect points, badges, Eco Tokens, and climb the leaderboard!</p>
+            <div className="bg-white rounded-xl shadow-lg p-4 text-center">
+              <div className="text-2xl mb-2">🔥</div>
+              <h3 className="text-sm font-semibold text-gray-800 mb-1">Streak</h3>
+              <p className="text-lg font-bold text-orange-600">{streak}</p>
+              <p className="text-xs text-gray-500">Current</p>
+            </div>
+            <div className="bg-white rounded-xl shadow-lg p-4 text-center">
+              <div className="text-2xl mb-2">⭐</div>
+              <h3 className="text-sm font-semibold text-gray-800 mb-1">Perfect</h3>
+              <p className="text-lg font-bold text-yellow-600">{perfectStreak}</p>
+              <p className="text-xs text-gray-500">Streak</p>
             </div>
           </div>
 
@@ -415,6 +424,25 @@ const Level1 = () => {
                 className="bg-gradient-to-r from-green-500 to-blue-500 h-4 rounded-full transition-all duration-300"
                 style={{ width: `${((currentGameIndex + 1) / GAMES.length) * 100}%` }}
               ></div>
+            </div>
+          </div>
+
+          {/* Gamification Instructions */}
+          <div className="mb-6 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-4 border border-yellow-200">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">🎮 How to Earn Gamification Features</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div className="flex items-center space-x-2">
+                <span className="text-yellow-500">⚡</span>
+                <span>Answer correctly to earn power-ups (20% chance)</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-green-500">💎</span>
+                <span>Collect eco items for bonus points (30% chance)</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-orange-500">🔥</span>
+                <span>Build streaks for score multipliers</span>
+              </div>
             </div>
           </div>
 
@@ -458,18 +486,23 @@ const Level1 = () => {
               {/* Gamification Status */}
               <div className="flex items-center space-x-4 text-sm">
                 {multiplier > 1 && (
-                  <div className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+                  <div className="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full font-bold animate-pulse">
                     ×{multiplier} Multiplier Active!
                   </div>
                 )}
                 {powerUps.length > 0 && (
-                  <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                    {powerUps.length} Power-up{powerUps.length > 1 ? 's' : ''} Available
+                  <div className="bg-blue-400 text-blue-900 px-3 py-1 rounded-full font-bold">
+                    {powerUps.length} Power-up{powerUps.length > 1 ? 's' : ''} Ready!
                   </div>
                 )}
                 {collectibles.length > 0 && (
-                  <div className="bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                    {collectibles.length} Collectible{collectibles.length > 1 ? 's' : ''} Found
+                  <div className="bg-green-400 text-green-900 px-3 py-1 rounded-full font-bold">
+                    {collectibles.length} Collectible{collectibles.length > 1 ? 's' : ''} Found!
+                  </div>
+                )}
+                {streak > 0 && (
+                  <div className="bg-orange-400 text-orange-900 px-3 py-1 rounded-full font-bold">
+                    🔥 {streak} Streak!
                   </div>
                 )}
               </div>

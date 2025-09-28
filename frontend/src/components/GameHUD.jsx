@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { Zap, Star, Heart, Clock, Target, Trophy, Sparkles } from 'lucide-react';
 
 export default function GameHUD({
   levelTitle,
@@ -10,12 +11,19 @@ export default function GameHUD({
   onQuit,
   streak = 0,
   combo = 0,
-  levelProgress = 0
+  levelProgress = 0,
+  powerUps = [],
+  onUsePowerUp,
+  collectibles = [],
+  xpGained = 0,
+  energyLevel = 100
 }) {
   const { user } = useAuth();
   const [showCombo, setShowCombo] = useState(false);
   const [showStreak, setShowStreak] = useState(false);
+  const [showXPGain, setShowXPGain] = useState(false);
   const [timeWarning, setTimeWarning] = useState(false);
+  const [showPowerUp, setShowPowerUp] = useState(null);
 
   const minutes = Math.floor(timeRemainingSec / 60);
   const seconds = timeRemainingSec % 60;
@@ -37,6 +45,15 @@ export default function GameHUD({
       return () => clearTimeout(timer);
     }
   }, [streak]);
+
+  // Show XP gain animation
+  useEffect(() => {
+    if (xpGained > 0) {
+      setShowXPGain(true);
+      const timer = setTimeout(() => setShowXPGain(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [xpGained]);
 
   // Time warning
   useEffect(() => {
@@ -77,12 +94,20 @@ export default function GameHUD({
           </div>
 
           {/* Center Section - Score and Stats */}
-          <div className="flex items-center space-x-8">
+          <div className="flex items-center space-x-6">
             {/* Score */}
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-900">{score}</div>
               <div className="text-xs text-gray-600">Score</div>
             </div>
+
+            {/* XP Gained */}
+            {showXPGain && (
+              <div className="text-center animate-bounce">
+                <div className="text-lg font-bold text-green-600">+{xpGained} XP</div>
+                <div className="text-xs text-green-600">Experience</div>
+              </div>
+            )}
 
             {/* Time */}
             <div className={`text-center ${timeWarning ? 'animate-pulse' : ''}`}>
@@ -99,9 +124,18 @@ export default function GameHUD({
               </div>
               <div className="text-xs text-gray-600">Hints</div>
             </div>
+
+            {/* Energy Level */}
+            <div className="text-center">
+              <div className="flex items-center space-x-1">
+                <Heart className="h-4 w-4 text-red-500" />
+                <span className="text-lg font-bold text-gray-900">{energyLevel}</span>
+              </div>
+              <div className="text-xs text-gray-600">Energy</div>
+            </div>
           </div>
 
-          {/* Right Section - Streak, Combo, Quit */}
+          {/* Right Section - Streak, Combo, Power-ups, Quit */}
           <div className="flex items-center space-x-4">
             {/* Streak */}
             {streak > 0 && (
@@ -116,6 +150,30 @@ export default function GameHUD({
               <div className={`text-center transition-all duration-300 ${showCombo ? 'scale-110' : ''}`}>
                 <div className="text-lg font-bold text-purple-600">⚡ {combo}x</div>
                 <div className="text-xs text-gray-600">Combo</div>
+              </div>
+            )}
+
+            {/* Power-ups */}
+            {powerUps.length > 0 && (
+              <div className="flex items-center space-x-2">
+                {powerUps.map((powerUp, index) => (
+                  <button
+                    key={index}
+                    onClick={() => onUsePowerUp && onUsePowerUp(powerUp)}
+                    className="p-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 transform hover:scale-105"
+                    title={powerUp.name}
+                  >
+                    {powerUp.icon}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Collectibles */}
+            {collectibles.length > 0 && (
+              <div className="flex items-center space-x-1">
+                <Sparkles className="h-4 w-4 text-yellow-500" />
+                <span className="text-sm font-bold text-yellow-600">{collectibles.length}</span>
               </div>
             )}
 

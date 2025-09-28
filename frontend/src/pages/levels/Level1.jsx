@@ -19,6 +19,68 @@ const Level1 = () => {
   const [answers, setAnswers] = useState({});
   const [feedback, setFeedback] = useState({});
   const [showAchievement, setShowAchievement] = useState(null);
+  const [powerUps, setPowerUps] = useState([]);
+  const [collectibles, setCollectibles] = useState([]);
+  const [xpGained, setXpGained] = useState(0);
+  const [energyLevel, setEnergyLevel] = useState(100);
+  const [showPowerUpEffect, setShowPowerUpEffect] = useState(null);
+
+  // Power-ups available in this level
+  const POWER_UPS = [
+    {
+      id: 'time_boost',
+      name: 'Time Boost',
+      icon: '⏰',
+      description: 'Adds 30 seconds to the timer',
+      effect: () => {
+        setTimeRemaining(prev => prev + 30);
+        setShowPowerUpEffect('⏰ +30 seconds!');
+        setTimeout(() => setShowPowerUpEffect(null), 2000);
+      }
+    },
+    {
+      id: 'hint_reveal',
+      name: 'Hint Reveal',
+      icon: '💡',
+      description: 'Reveals the correct answer',
+      effect: () => {
+        const currentGame = GAMES[currentGameIndex];
+        setAnswers(prev => ({ ...prev, [currentGame.id]: currentGame.correct }));
+        setShowPowerUpEffect('💡 Answer revealed!');
+        setTimeout(() => setShowPowerUpEffect(null), 2000);
+      }
+    },
+    {
+      id: 'score_multiplier',
+      name: 'Score Multiplier',
+      icon: '⭐',
+      description: '2x points for next 3 answers',
+      effect: () => {
+        setCombo(prev => Math.max(prev, 2));
+        setShowPowerUpEffect('⭐ 2x Score Active!');
+        setTimeout(() => setShowPowerUpEffect(null), 2000);
+      }
+    },
+    {
+      id: 'energy_boost',
+      name: 'Energy Boost',
+      icon: '⚡',
+      description: 'Restores 25 energy',
+      effect: () => {
+        setEnergyLevel(prev => Math.min(100, prev + 25));
+        setShowPowerUpEffect('⚡ +25 Energy!');
+        setTimeout(() => setShowPowerUpEffect(null), 2000);
+      }
+    }
+  ];
+
+  // Collectibles that can be found
+  const COLLECTIBLES = [
+    { id: 'eco_coin', name: 'Eco Coin', icon: '🪙', points: 50 },
+    { id: 'green_gem', name: 'Green Gem', icon: '💚', points: 100 },
+    { id: 'solar_crystal', name: 'Solar Crystal', icon: '☀️', points: 75 },
+    { id: 'wind_token', name: 'Wind Token', icon: '💨', points: 60 }
+  ];
 
   const GAMES = [
     {
@@ -169,7 +231,17 @@ const Level1 = () => {
 
   const submitGameAnswer = async (game, answer) => {
     const isCorrect = answer === game.correct;
-    const points = isCorrect ? game.points : 0;
+    let points = isCorrect ? game.points : 0;
+    
+    // Apply combo multiplier
+    if (isCorrect && combo > 1) {
+      points = Math.floor(points * combo);
+    }
+    
+    // Apply streak bonus
+    if (isCorrect && streak > 0) {
+      points += Math.floor(streak * 5);
+    }
     
     setFeedback(prev => ({ ...prev, [game.id]: { correct: isCorrect, points } }));
     
@@ -177,9 +249,30 @@ const Level1 = () => {
       setScore(prev => prev + points);
       setStreak(prev => prev + 1);
       setCombo(prev => prev + 1);
+      
+      // Award XP
+      const xpEarned = Math.floor(points / 2);
+      setXpGained(xpEarned);
+      
+      // Random collectible chance (20%)
+      if (Math.random() < 0.2) {
+        const randomCollectible = COLLECTIBLES[Math.floor(Math.random() * COLLECTIBLES.length)];
+        setCollectibles(prev => [...prev, randomCollectible]);
+        setScore(prev => prev + randomCollectible.points);
+      }
+      
+      // Random power-up chance (15%)
+      if (Math.random() < 0.15 && powerUps.length < 3) {
+        const randomPowerUp = POWER_UPS[Math.floor(Math.random() * POWER_UPS.length)];
+        setPowerUps(prev => [...prev, randomPowerUp]);
+      }
+      
+      // Energy consumption
+      setEnergyLevel(prev => Math.max(0, prev - 5));
     } else {
       setStreak(0);
       setCombo(0);
+      setEnergyLevel(prev => Math.max(0, prev - 10));
     }
   };
 
@@ -193,6 +286,16 @@ const Level1 = () => {
     } catch (error) {
       console.error('Error awarding XP:', error);
     }
+  };
+
+  const usePowerUp = (powerUp) => {
+    powerUp.effect();
+    setPowerUps(prev => prev.filter(p => p.id !== powerUp.id));
+  };
+
+  const addCollectible = (collectible) => {
+    setCollectibles(prev => [...prev, collectible]);
+    setScore(prev => prev + collectible.points);
   };
 
   const handleLevelComplete = async () => {
@@ -246,6 +349,11 @@ const Level1 = () => {
         streak={streak}
         combo={combo}
         levelProgress={((currentGameIndex + 1) / GAMES.length) * 100}
+        powerUps={powerUps}
+        onUsePowerUp={usePowerUp}
+        collectibles={collectibles}
+        xpGained={xpGained}
+        energyLevel={energyLevel}
       />
 
       <div className="pt-20 p-6">
@@ -321,6 +429,29 @@ const Level1 = () => {
               Next
             </button>
           </div>
+
+          {/* Power-up Effect Display */}
+          {showPowerUpEffect && (
+            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white rounded-lg shadow-2xl p-6 text-center animate-bounce">
+              <div className="text-4xl mb-2">{showPowerUpEffect}</div>
+              <div className="text-lg font-semibold text-gray-800">Power-up Activated!</div>
+            </div>
+          )}
+
+          {/* Collectibles Display */}
+          {collectibles.length > 0 && (
+            <div className="fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 z-40">
+              <h3 className="text-sm font-semibold text-gray-800 mb-2">Collectibles Found:</h3>
+              <div className="flex space-x-2">
+                {collectibles.map((collectible, index) => (
+                  <div key={index} className="text-center">
+                    <div className="text-2xl">{collectible.icon}</div>
+                    <div className="text-xs text-gray-600">{collectible.name}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Complete Level Button */}
           <div className="text-center mt-8">

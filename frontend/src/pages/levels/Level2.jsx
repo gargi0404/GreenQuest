@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import GameHUD from '../../components/GameHUD';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 const LEVEL_TIME_SEC = 1200; // 20 minutes
 
 const Level2 = () => {

@@ -381,35 +381,35 @@ const Level1 = () => {
         <div className="max-w-6xl mx-auto">
           {/* Header Section */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">Carbon Detective - Level 1</h1>
+            <h1 className="text-4xl font-bold text-gray-800 mb-4">🎮 Carbon Detective - Level 1 🎮</h1>
             <p className="text-xl text-gray-600">Master the art of eco-detection! Answer questions to unlock power-ups and collectibles.</p>
           </div>
 
-          {/* Gamification Status Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            <div className="bg-white rounded-xl shadow-lg p-4 text-center">
-              <div className="text-2xl mb-2">⚡</div>
-              <h3 className="text-sm font-semibold text-gray-800 mb-1">Power-ups</h3>
-              <p className="text-lg font-bold text-yellow-600">{powerUps.length}</p>
-              <p className="text-xs text-gray-500">Available</p>
+          {/* Gamification Status Cards - Always Visible */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div className="bg-gradient-to-br from-yellow-100 to-orange-100 rounded-xl shadow-lg p-4 text-center border-2 border-yellow-300">
+              <div className="text-4xl mb-2">⚡</div>
+              <h3 className="text-sm font-bold text-gray-800 mb-1">Power-ups</h3>
+              <p className="text-2xl font-bold text-yellow-600">{powerUps.length}</p>
+              <p className="text-xs text-gray-600">Available</p>
             </div>
-            <div className="bg-white rounded-xl shadow-lg p-4 text-center">
-              <div className="text-2xl mb-2">💎</div>
-              <h3 className="text-sm font-semibold text-gray-800 mb-1">Collectibles</h3>
-              <p className="text-lg font-bold text-green-600">{collectibles.length}</p>
-              <p className="text-xs text-gray-500">Found</p>
+            <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl shadow-lg p-4 text-center border-2 border-green-300">
+              <div className="text-4xl mb-2">💎</div>
+              <h3 className="text-sm font-bold text-gray-800 mb-1">Collectibles</h3>
+              <p className="text-2xl font-bold text-green-600">{collectibles.length}</p>
+              <p className="text-xs text-gray-600">Found</p>
             </div>
-            <div className="bg-white rounded-xl shadow-lg p-4 text-center">
-              <div className="text-2xl mb-2">🔥</div>
-              <h3 className="text-sm font-semibold text-gray-800 mb-1">Streak</h3>
-              <p className="text-lg font-bold text-orange-600">{streak}</p>
-              <p className="text-xs text-gray-500">Current</p>
+            <div className="bg-gradient-to-br from-orange-100 to-red-100 rounded-xl shadow-lg p-4 text-center border-2 border-orange-300">
+              <div className="text-4xl mb-2">🔥</div>
+              <h3 className="text-sm font-bold text-gray-800 mb-1">Streak</h3>
+              <p className="text-2xl font-bold text-orange-600">{streak}</p>
+              <p className="text-xs text-gray-600">Current</p>
             </div>
-            <div className="bg-white rounded-xl shadow-lg p-4 text-center">
-              <div className="text-2xl mb-2">⭐</div>
-              <h3 className="text-sm font-semibold text-gray-800 mb-1">Perfect</h3>
-              <p className="text-lg font-bold text-yellow-600">{perfectStreak}</p>
-              <p className="text-xs text-gray-500">Streak</p>
+            <div className="bg-gradient-to-br from-yellow-100 to-amber-100 rounded-xl shadow-lg p-4 text-center border-2 border-yellow-300">
+              <div className="text-4xl mb-2">⭐</div>
+              <h3 className="text-sm font-bold text-gray-800 mb-1">Perfect</h3>
+              <p className="text-2xl font-bold text-yellow-600">{perfectStreak}</p>
+              <p className="text-xs text-gray-600">Streak</p>
             </div>
           </div>
 
@@ -428,27 +428,36 @@ const Level1 = () => {
           </div>
 
           {/* Gamification Instructions */}
-          <div className="mb-6 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-4 border border-yellow-200">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">🎮 How to Earn Gamification Features</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <div className="flex items-center space-x-2">
-                <span className="text-yellow-500">⚡</span>
-                <span>Answer correctly to earn power-ups (20% chance)</span>
+          <div className="mb-6 bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl p-6 border-2 border-purple-300 shadow-lg">
+            <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">🎮 How to Earn Gamification Features 🎮</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+              <div className="flex items-center space-x-3 bg-white rounded-lg p-3 shadow-md">
+                <span className="text-3xl">⚡</span>
+                <div>
+                  <div className="font-bold text-yellow-600">Power-ups</div>
+                  <div className="text-gray-600">Answer correctly to earn power-ups (20% chance)</div>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <span className="text-green-500">💎</span>
-                <span>Collect eco items for bonus points (30% chance)</span>
+              <div className="flex items-center space-x-3 bg-white rounded-lg p-3 shadow-md">
+                <span className="text-3xl">💎</span>
+                <div>
+                  <div className="font-bold text-green-600">Collectibles</div>
+                  <div className="text-gray-600">Collect eco items for bonus points (30% chance)</div>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <span className="text-orange-500">🔥</span>
-                <span>Build streaks for score multipliers</span>
+              <div className="flex items-center space-x-3 bg-white rounded-lg p-3 shadow-md">
+                <span className="text-3xl">🔥</span>
+                <div>
+                  <div className="font-bold text-orange-600">Streaks</div>
+                  <div className="text-gray-600">Build streaks for score multipliers</div>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Game Card */}
-          <div className="bg-white rounded-xl shadow-lg p-8 mb-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">{currentGame.question}</h2>
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg p-8 mb-6 border-2 border-blue-200">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">🎯 {currentGame.question}</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {currentGame.options.map((option) => (
@@ -458,14 +467,14 @@ const Level1 = () => {
                     setAnswers(prev => ({ ...prev, [currentGame.id]: option.id }));
                     submitGameAnswer(currentGame, option.id);
                   }}
-                  className={`p-6 rounded-xl border-2 transition-all duration-200 text-center hover:scale-105 ${
+                  className={`p-6 rounded-xl border-2 transition-all duration-200 text-center hover:scale-105 shadow-lg ${
                     answers[currentGame.id] === option.id
                       ? feedback[currentGame.id]?.correct === true
-                        ? 'border-green-500 bg-green-50'
+                        ? 'border-green-500 bg-gradient-to-br from-green-100 to-emerald-100 shadow-green-200'
                         : feedback[currentGame.id]?.correct === false
-                        ? 'border-red-500 bg-red-50'
-                        : 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                        ? 'border-red-500 bg-gradient-to-br from-red-100 to-pink-100 shadow-red-200'
+                        : 'border-blue-500 bg-gradient-to-br from-blue-100 to-indigo-100 shadow-blue-200'
+                      : 'border-gray-300 hover:border-blue-400 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 shadow-gray-200'
                   }`}
                 >
                   <div className="text-lg font-semibold text-gray-800">{option.text}</div>
@@ -532,14 +541,14 @@ const Level1 = () => {
           <div className="text-center mt-8">
             <button
               onClick={handleLevelComplete}
-              className={`px-8 py-4 text-lg font-semibold rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg ${
+              className={`px-12 py-6 text-xl font-bold rounded-xl transform hover:scale-105 transition-all duration-200 shadow-2xl ${
                 allCompleted
-                  ? 'bg-gradient-to-r from-green-500 to-blue-500 text-white hover:from-green-600 hover:to-blue-600'
-                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  ? 'bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white hover:from-yellow-500 hover:via-orange-600 hover:to-red-600 animate-pulse'
+                  : 'bg-gray-400 text-gray-600 cursor-not-allowed'
               }`}
               disabled={!allCompleted}
             >
-              {allCompleted ? '🎉 Complete Level 1!' : 'Complete All Questions First'}
+              {allCompleted ? '🎉🎊 Complete Level 1! 🎊🎉' : '❌ Complete All Questions First ❌'}
             </button>
           </div>
         </div>

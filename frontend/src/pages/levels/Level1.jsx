@@ -336,7 +336,7 @@ const Level1 = () => {
   const allCompleted = Object.keys(feedback).length === GAMES.length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 relative">
+    <div className="min-h-screen bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 relative">
       {/* Power-up Effects */}
       {showPowerUpEffect && (
         <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center">
@@ -378,42 +378,48 @@ const Level1 = () => {
       />
 
       <div className="pt-20 p-6">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
+          {/* Header Section */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-white mb-4">Carbon Detective - Level 1</h1>
+            <p className="text-xl text-white/90">Master the art of eco-detection! Answer questions to unlock power-ups and collectibles.</p>
+          </div>
+
           {/* Progress Bar */}
-          <div className="mb-8">
-            <div className="flex justify-between text-sm text-gray-600 mb-2">
+          <div className="mb-8 bg-white/10 backdrop-blur-sm rounded-xl p-6">
+            <div className="flex justify-between text-sm text-white mb-2">
               <span>Question {currentGameIndex + 1} of {GAMES.length}</span>
               <span>{Math.round(((currentGameIndex + 1) / GAMES.length) * 100)}% Complete</span>
             </div>
-            <div className="bg-gray-200 rounded-full h-3">
+            <div className="bg-white/20 rounded-full h-4">
               <div 
-                className="bg-gradient-to-r from-green-500 to-blue-500 h-3 rounded-full transition-all duration-300"
+                className="bg-gradient-to-r from-yellow-400 to-orange-500 h-4 rounded-full transition-all duration-300 shadow-lg"
                 style={{ width: `${((currentGameIndex + 1) / GAMES.length) * 100}%` }}
               ></div>
             </div>
           </div>
 
           {/* Gamification Features Info */}
-          <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border border-blue-200">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">🎮 Gamification Features</h3>
+          <div className="mb-6 bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+            <h3 className="text-xl font-bold text-white mb-4">🎮 Gamification Features</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <div className="flex items-center space-x-2">
-                <span className="text-yellow-500">⚡</span>
+              <div className="flex items-center space-x-2 text-white">
+                <span className="text-yellow-400 text-lg">⚡</span>
                 <span>Answer correctly to earn power-ups (20% chance)</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <span className="text-green-500">💎</span>
+              <div className="flex items-center space-x-2 text-white">
+                <span className="text-green-400 text-lg">💎</span>
                 <span>Collect eco items for bonus points (30% chance)</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <span className="text-orange-500">🔥</span>
+              <div className="flex items-center space-x-2 text-white">
+                <span className="text-orange-400 text-lg">🔥</span>
                 <span>Build streaks for score multipliers</span>
               </div>
             </div>
           </div>
 
           {/* Game Card */}
-          <div className="bg-white rounded-xl shadow-lg p-8 mb-6">
+          <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl p-8 mb-6 border border-white/20">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">{currentGame.question}</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -424,14 +430,14 @@ const Level1 = () => {
                     setAnswers(prev => ({ ...prev, [currentGame.id]: option.id }));
                     submitGameAnswer(currentGame, option.id);
                   }}
-                  className={`p-6 rounded-xl border-2 transition-all duration-200 text-center hover:scale-105 ${
+                  className={`p-6 rounded-xl border-2 transition-all duration-200 text-center hover:scale-105 shadow-lg ${
                     answers[currentGame.id] === option.id
                       ? feedback[currentGame.id]?.correct === true
-                        ? 'border-green-500 bg-green-50'
+                        ? 'border-green-500 bg-green-100 shadow-green-200'
                         : feedback[currentGame.id]?.correct === false
-                        ? 'border-red-500 bg-red-50'
-                        : 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                        ? 'border-red-500 bg-red-100 shadow-red-200'
+                        : 'border-blue-500 bg-blue-100 shadow-blue-200'
+                      : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50 shadow-gray-200'
                   }`}
                 >
                   <div className="text-lg font-semibold text-gray-800">{option.text}</div>
@@ -452,17 +458,17 @@ const Level1 = () => {
               {/* Gamification Status */}
               <div className="flex items-center space-x-4 text-sm">
                 {multiplier > 1 && (
-                  <div className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+                  <div className="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full font-semibold shadow-lg">
                     ×{multiplier} Multiplier Active!
                   </div>
                 )}
                 {powerUps.length > 0 && (
-                  <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                  <div className="bg-blue-400 text-blue-900 px-3 py-1 rounded-full font-semibold shadow-lg">
                     {powerUps.length} Power-up{powerUps.length > 1 ? 's' : ''} Available
                   </div>
                 )}
                 {collectibles.length > 0 && (
-                  <div className="bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                  <div className="bg-green-400 text-green-900 px-3 py-1 rounded-full font-semibold shadow-lg">
                     {collectibles.length} Collectible{collectibles.length > 1 ? 's' : ''} Found
                   </div>
                 )}
@@ -471,21 +477,21 @@ const Level1 = () => {
           </div>
 
           {/* Navigation */}
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
             <button
               onClick={() => setCurrentGameIndex(prev => Math.max(0, prev - 1))}
               disabled={currentGameIndex === 0}
-              className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200"
+              className="px-8 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg font-semibold"
             >
-              Previous
+              ← Previous
             </button>
             
             <button
               onClick={() => setCurrentGameIndex(prev => Math.min(GAMES.length - 1, prev + 1))}
               disabled={currentGameIndex === GAMES.length - 1}
-              className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200"
+              className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 shadow-lg font-semibold"
             >
-              Next
+              Next →
             </button>
           </div>
 
@@ -493,14 +499,14 @@ const Level1 = () => {
           <div className="text-center mt-8">
             <button
               onClick={handleLevelComplete}
-              className={`px-8 py-4 text-lg font-semibold rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg ${
+              className={`px-12 py-4 text-xl font-bold rounded-xl transform hover:scale-105 transition-all duration-200 shadow-2xl ${
                 allCompleted
-                  ? 'bg-gradient-to-r from-green-500 to-blue-500 text-white hover:from-green-600 hover:to-blue-600'
-                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  ? 'bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white hover:from-yellow-500 hover:via-orange-600 hover:to-red-600 animate-pulse'
+                  : 'bg-gray-400 text-gray-600 cursor-not-allowed'
               }`}
               disabled={!allCompleted}
             >
-              {allCompleted ? '🎉 Complete Level' : 'Complete All Questions First'}
+              {allCompleted ? '🎉 Complete Level 1!' : 'Complete All Questions First'}
             </button>
           </div>
         </div>

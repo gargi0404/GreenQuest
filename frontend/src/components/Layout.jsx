@@ -9,7 +9,8 @@ import {
   Settings, 
   LogOut,
   Menu,
-  X
+  X,
+  Globe
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -21,8 +22,9 @@ const Layout = () => {
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
     { name: 'Leaderboard', href: '/leaderboard', icon: Trophy },
-    { name: 'Badges', href: '/badges', icon: Award },
-    { name: 'Challenges', href: '/challenges', icon: BookOpen },
+    { name: 'Real-World Tasks', href: '/real-world-tasks', icon: Globe },
+    { name: 'Game Rules', href: '/game-rules', icon: BookOpen },
+    { name: 'Game Module', href: '/game', icon: Home },
     { name: 'Community', href: '/community', icon: Users },
     { name: 'Settings', href: '/settings', icon: Settings },
   ];

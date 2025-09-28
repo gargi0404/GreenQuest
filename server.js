@@ -56,7 +56,8 @@ const corsOptions = {
       'http://localhost:3001',
       'http://localhost:5173',  // Vite dev server port
       'http://localhost:5174',  // Vite dev server port
-      'http://localhost:5175'   // Vite dev server port
+      'http://localhost:5175',  // Vite dev server port
+      'https://green-quest2727.vercel.app'  // Vercel deployment
     ];
     
     if (allowedOrigins.indexOf(origin) !== -1) {

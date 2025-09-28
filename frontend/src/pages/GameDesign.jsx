@@ -167,97 +167,117 @@ const GameRules = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">🎮 Game Rules & Guide 🎮</h1>
-          <p className="text-xl text-gray-600">Master all 5 levels of environmental challenges!</p>
+          <div className="flex items-center justify-center mb-4">
+            <div className="text-4xl mr-3">🌿</div>
+            <h1 className="text-4xl font-bold text-gray-800">Green Innovators Game Hub</h1>
+            <div className="text-4xl ml-3">🎮</div>
+          </div>
+          <p className="text-xl text-gray-600">Choose your eco-adventure and earn rewards!</p>
         </div>
 
-        {/* Level Navigation */}
-        <div className="flex justify-center items-center space-x-4 mb-8">
-          <button
-            onClick={prevLevel}
-            disabled={activeLevel === 1}
-            className={`p-2 rounded-full ${activeLevel === 1 ? 'bg-gray-200 text-gray-400' : 'bg-white text-gray-600 hover:bg-gray-50'} shadow-md transition-all duration-200`}
-          >
-            <ChevronLeft className="h-6 w-6" />
-          </button>
-          
-          <div className="flex space-x-2">
-            {levels.map((level) => (
-              <button
-                key={level.id}
-                onClick={() => setActiveLevel(level.id)}
-                className={`px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
-                  activeLevel === level.id
-                    ? `bg-gradient-to-r ${level.color} text-white shadow-lg`
-                    : 'bg-white text-gray-600 hover:bg-gray-50 shadow-md'
-                }`}
-              >
-                Level {level.id}
-              </button>
-            ))}
+        {/* Daily Bonus Banner */}
+        <div className="bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-xl p-4 mb-8 text-center shadow-lg">
+          <div className="flex items-center justify-center">
+            <span className="text-2xl mr-2">🎁</span>
+            <span className="text-lg font-semibold">Daily Bonus Available! +50 XP for first level today</span>
           </div>
-
-          <button
-            onClick={nextLevel}
-            disabled={activeLevel === 5}
-            className={`p-2 rounded-full ${activeLevel === 5 ? 'bg-gray-200 text-gray-400' : 'bg-white text-gray-600 hover:bg-gray-50'} shadow-md transition-all duration-200`}
-          >
-            <ChevronRight className="h-6 w-6" />
-          </button>
         </div>
 
-        {/* Current Level Details */}
-        <div className={`${currentLevel.bgColor} rounded-xl shadow-lg p-8 mb-8 border-2 ${currentLevel.borderColor}`}>
-          <div className="text-center mb-6">
-            <div className="text-6xl mb-4">{currentLevel.icon}</div>
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">{currentLevel.name}</h2>
-            <p className="text-xl text-gray-600">{currentLevel.theme}</p>
+        {/* Player Stats */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+          <div className="flex justify-center space-x-8 text-center">
+            <div>
+              <div className="text-2xl font-bold text-green-600">Level: 1</div>
+              <div className="text-sm text-gray-600">Current Level</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-blue-600">XP: 0</div>
+              <div className="text-sm text-gray-600">Experience Points</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-purple-600">Badges: 0</div>
+              <div className="text-sm text-gray-600">Achievements</div>
+            </div>
           </div>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Objectives */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex items-center mb-4">
-                <Target className="h-6 w-6 text-green-500 mr-2" />
-                <h3 className="text-xl font-bold text-gray-800">Objectives</h3>
-              </div>
-              <div className="space-y-3">
-                {currentLevel.objectives.map((objective, index) => (
-                  <div key={index} className="flex items-center">
-                    <span className="text-green-500 mr-3">✓</span>
-                    <span className="text-gray-700">{objective}</span>
+        {/* Level Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {levels.map((level) => (
+            <div key={level.id} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-all duration-200">
+              {/* Level Header */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center">
+                  <div className="text-3xl mr-3">{level.icon}</div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-800">Level {level.id}: {level.name}</h3>
+                    <p className="text-sm text-gray-600">{level.theme}</p>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Game Types */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex items-center mb-4">
-                <Play className="h-6 w-6 text-blue-500 mr-2" />
-                <h3 className="text-xl font-bold text-gray-800">Game Types</h3>
-              </div>
-              <div className="space-y-3">
-                {currentLevel.gameTypes.map((gameType, index) => (
-                  <div key={index} className="flex items-center">
-                    <span className="text-blue-500 mr-3">🎯</span>
-                    <span className="text-gray-700">{gameType}</span>
+                </div>
+                {level.id <= 2 ? (
+                  <div className="flex items-center text-green-600">
+                    <span className="text-sm font-semibold mr-1">Completed!</span>
+                    <span className="text-lg">✓</span>
                   </div>
-                ))}
+                ) : level.id === 3 ? (
+                  <div className="text-gray-600">
+                    <span className="text-sm">Available</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center text-gray-400">
+                    <span className="text-sm mr-1">Level {level.id} locked</span>
+                    <span className="text-lg">🔒</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Score and Difficulty */}
+              {level.id <= 2 && (
+                <div className="flex justify-between items-center mb-4">
+                  <div className="text-lg font-bold text-blue-600">Score: {level.id === 1 ? '850' : '720'}</div>
+                  <div className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                    level.id <= 2 ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {level.id <= 2 ? 'Easy' : 'Medium'}
+                  </div>
+                </div>
+              )}
+
+              {/* Rewards */}
+              <div className="mb-4">
+                <div className="text-sm text-gray-600 mb-1">Rewards:</div>
+                <div className="text-sm font-semibold text-yellow-600">{level.rewards}</div>
+              </div>
+
+              {/* Estimated Time */}
+              <div className="mb-4">
+                <div className="text-sm text-gray-600 mb-1">Estimated Time:</div>
+                <div className="text-sm font-semibold text-gray-800">
+                  {level.id === 1 ? '15 min' : level.id === 2 ? '20 min' : level.id === 3 ? '25 min' : '30 min'}
+                </div>
+              </div>
+
+              {/* Unlock Condition for locked levels */}
+              {level.id > 3 && (
+                <div className="mb-4 p-3 bg-gray-100 rounded-lg">
+                  <div className="text-sm text-gray-600">
+                    {level.id === 4 ? 'Reach level 3 to unlock' : 'Reach level 4 to unlock'}
+                  </div>
+                </div>
+              )}
+
+              {/* Difficulty Badge */}
+              <div className="flex justify-end">
+                <div className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                  level.id <= 2 ? 'bg-green-100 text-green-800' : 
+                  level.id === 3 ? 'bg-yellow-100 text-yellow-800' : 
+                  'bg-red-100 text-red-800'
+                }`}>
+                  {level.id <= 2 ? 'Easy' : level.id === 3 ? 'Medium' : 'Hard'}
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* Rewards */}
-          <div className="mt-6 bg-white rounded-xl shadow-lg p-6">
-            <div className="flex items-center mb-4">
-              <Trophy className="h-6 w-6 text-yellow-500 mr-2" />
-              <h3 className="text-xl font-bold text-gray-800">Rewards</h3>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-yellow-600">{currentLevel.rewards}</div>
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* General Game Rules */}
@@ -288,17 +308,6 @@ const GameRules = () => {
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex justify-center space-x-4 mb-8">
-          <button className={`bg-gradient-to-r ${currentLevel.color} text-white px-8 py-4 rounded-lg font-semibold text-lg flex items-center space-x-2 shadow-lg hover:shadow-xl transition-all duration-200`}>
-            <Play className="h-5 w-5" />
-            <span>Start Level {activeLevel}</span>
-          </button>
-          <button className="bg-gray-500 hover:bg-gray-600 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-lg transition-all duration-200">
-            Practice Mode
-          </button>
         </div>
 
         {/* Footer Stats */}

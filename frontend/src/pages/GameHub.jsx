@@ -20,7 +20,7 @@ const GameHub = () => {
       const response = await axios.get('http://localhost:5001/api/gamification/completed-levels', {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setCompletedLevels(response.data.completedLevels || []);
+      setCompletedLevels(response.data.data.completedLevels || []);
     } catch (error) {
       console.error('Error fetching completed levels:', error);
     } finally {

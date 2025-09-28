@@ -427,33 +427,6 @@ const Level1 = () => {
             </div>
           </div>
 
-          {/* Gamification Instructions */}
-          <div className="mb-6 bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl p-6 border-2 border-purple-300 shadow-lg">
-            <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">🎮 How to Earn Gamification Features 🎮</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
-              <div className="flex items-center space-x-3 bg-white rounded-lg p-3 shadow-md">
-                <span className="text-3xl">⚡</span>
-                <div>
-                  <div className="font-bold text-yellow-600">Power-ups</div>
-                  <div className="text-gray-600">Answer correctly to earn power-ups (20% chance)</div>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3 bg-white rounded-lg p-3 shadow-md">
-                <span className="text-3xl">💎</span>
-                <div>
-                  <div className="font-bold text-green-600">Collectibles</div>
-                  <div className="text-gray-600">Collect eco items for bonus points (30% chance)</div>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3 bg-white rounded-lg p-3 shadow-md">
-                <span className="text-3xl">🔥</span>
-                <div>
-                  <div className="font-bold text-orange-600">Streaks</div>
-                  <div className="text-gray-600">Build streaks for score multipliers</div>
-                </div>
-              </div>
-            </div>
-          </div>
 
           {/* Game Card */}
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg p-8 mb-6 border-2 border-blue-200">

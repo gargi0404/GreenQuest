@@ -12,11 +12,17 @@ import TeacherDashboard from './pages/TeacherDashboard';
 import NGODashboard from './pages/NGODashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import Leaderboard from './pages/Leaderboard';
-import Badges from './pages/Badges';
-import Challenges from './pages/Challenges';
 import Community from './pages/Community';
 import Settings from './pages/Settings';
 import Unauthorized from './pages/Unauthorized';
+import RealWorldEcoTasks from './pages/RealWorldEcoTasks';
+import GameRules from './pages/GameDesign';
+import GameHub from './pages/GameHub';
+import Level1 from './pages/levels/Level1';
+import Level2 from './pages/levels/Level2';
+import Level3 from './pages/levels/Level3';
+import Level4 from './pages/levels/Level4';
+import Level5 from './pages/levels/Level5';
 
 function App() {
   return (

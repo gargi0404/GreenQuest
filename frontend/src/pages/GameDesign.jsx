@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import {
-  BookOpen, Lightbulb, Target, Users, Award, Clock,
-  Zap, Leaf, Recycle, Sun, Wind, Home, Settings, Trophy,
-  Flame, CheckCircle, XCircle, MapPin, Phone, Heart, Star, Filter, Search, Plus
+  BookOpen, Target, Users, Award, Clock,
+  Zap, Leaf, Recycle, Sun, Wind, Home, Trophy,
+  Flame
 } from 'lucide-react';
 
 const GameRules = () => {

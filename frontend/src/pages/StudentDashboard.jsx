@@ -43,7 +43,8 @@ const StudentDashboard = () => {
   };
 
   const getProgressPercentage = (current, target) => {
-    return Math.min((current / target) * 100, 100);
+    if (!target || target === 0) return 0;
+    return Math.min(((current || 0) / target) * 100, 100);
   };
 
   const getNextBadge = () => {
@@ -149,12 +150,12 @@ const StudentDashboard = () => {
                 <div className="mt-2">
                   <div className="flex justify-between text-sm text-gray-600 mb-1">
                     <span>Progress</span>
-                    <span>{user?.points || 0}/{nextBadge.pointsRequired}</span>
+                    <span>{user?.points || 0}/{nextBadge?.pointsRequired || 0}</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
                       className="bg-primary-600 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${getProgressPercentage(user.points, nextBadge.pointsRequired)}%` }}
+                      style={{ width: `${getProgressPercentage(user?.points, nextBadge?.pointsRequired)}%` }}
                     ></div>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
